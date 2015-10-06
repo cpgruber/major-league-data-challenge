@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MLB Data Viz challenge</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+
+    <style>
+    </style>
+
+  </head>
+
+  <body>
+
+  	<select id='clicker'>
+  		<option value='HR'>Homers</option>
+  		<option value='hits'>Hits</option>
+  		<option value='RBI'>Ribbys</option>
+  		<option value='BA'>Batting Average</option>
+  		<option value='slug'>Slugging</option>
+  		<option value='runs'>Runs</option>
+  	</select>
+
+    <label><input type="radio" value="time" name="optradio1" checked>Over Time</label>
+    <label><input type="radio" value="career" name="optradio1">Over Career</label>
+
+  	<script>
+  	var width = 700, height = 500, margins = {left:50,right:50,top:20,bottom:20};
+  	var svg = d3.select('body').append('svg').attr('height',height).attr('width',width);
+
+  	var players = ['Barry_Bonds','Albert_Pujols','Babe_Ruth','Honus_Wagner','Joe_DiMaggio','Lou_Gehrig','Mickey_Mantle','Ty_Cobb','Willie_Mays','Ted_Williams'];
+
+  	var dataset = [];
+
+  	//load data into dataset
+  	for (var b=0;b<players.length;b++){
+  		var player = svg.append('g').attr('class','player '+players[b]);
+  		d3.csv('hitters/'+players[b]+'.csv')
+	  		.row(function(d) { return { year:+d.Year, hits:+d.H, doubles:+d['2B'], triples:+d['3B'], RBI:+d.RBI, HR:+d.HR, runs:+d.R, TB:+d.TB, AB:+d.AB, slug:+d.SLG, BA:+d.BA, BB:+d.BB, IBB:+d.IBB, SB:+d.SB, CS:+d.CS, K:+d.SO, G:+d.G }; 	  	
+	  		})
+		    .get(function(error, rows) { 
+		    	var playerData = {data:rows};
+		    	dataset.push(playerData);
+		    	if (dataset.length === players.length){
+		    		allDone();
+		    	}
+		    })
+  	}
+
+  	function allDone(){
+  		//bind data to player
+  		for (var i=0;i<players.length;i++){
+  			dataset[i].player = players[i];
+  			var name = players[i].split('_').join(" ");
+  			dataset[i].display = name;
+  		}
+
+  		var x = d3.scale.linear().range([margins.left,width-margins.right]);
+		var y = d3.scale.linear().range([(height-margins.bottom),margins.top]);
+		var color = d3.scale.linear().domain([0,2,4,6,9]).range(['green','blue','red','yellow','orange']);
+  		var lines = svg.selectAll('.player').data(dataset).append('path')
+  			.style('fill','none').style('stroke-width',3).style('stroke-opacity',0.5)
+  			.style('stroke',function(d,i){return color(i)});
+
+  		var xAxis = d3.svg.axis().orient('bottom').tickFormat(d3.format('d'));
+  		svg.append('svg:g')
+  			.attr('transform','translate('+0+','+(height-margins.bottom)+')')
+  			.attr('class','xaxis')
+
+  		var yAxis = d3.svg.axis().orient('left');
+  		svg.append('svg:g')
+  			.attr('transform','translate('+margins.left+','+0+')')
+  			.attr('class','yaxis')
+
+	  	var lineFx = d3.svg.line()
+	        .interpolate('linear');
+
+  		function lineChange(field){
+	  		var fieldMax = d3.max(dataset, function(d) {
+	  			return d3.max(d.data, function(e){
+	  				return e[field];
+	  			});
+	  		});
+
+	  		y.domain([0,fieldMax]);
+
+	        lineFx.y(function (d) { return y(d[field]) });
+
+	  		lines.transition().duration(500).attr('d', function(d){return lineFx(d.data)});
+	  		d3.select('.yaxis').transition().duration(500).call(yAxis.scale(y));
+  		}
+
+  		function timeChange(time){
+  			if (time == 'career'){
+  				var min = 0;
+  				var max = d3.max(dataset, function(d){return d.data.length})-1;
+  				lineFx.x(function(d,i){return x(i)});
+  			}else{
+  			  	var min = d3.min(dataset, function(d) {return d.data[0].year;});
+  				var max = d3.max(dataset, function(d) {return d.data[d.data.length-1].year;});	
+  				lineFx.x(function (d) { return x(d.year) })
+  			}
+  			x.domain([min,max]);
+
+  			var field = d3.select('#clicker').node().value;
+  			d3.select('.xaxis').transition().duration(500).call(xAxis.scale(x));
+  			lineChange(field);
+  		}
+
+  		timeChange('time');
+  			
+  		d3.select('#clicker').on('change', function(){
+  			var field = d3.select(this).node().value;
+  			lineChange(field);
+  		});
+
+  		d3.selectAll('input').on('change', function () {
+        	var time = d3.select(this).node().value;
+        	timeChange(time);
+    	});
+
+  	}
+  	
+  	</script>
+  </body>
+
+</html>
+
