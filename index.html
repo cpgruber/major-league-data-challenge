@@ -178,7 +178,7 @@
 
         hitDiv.select('.playerList').append('div')
           .attr('class','playerBtn').attr('player',guy)//.text(name)
-          .style('background-image', 'url(images/'+guy+'.png)')
+          .style('background-image', 'url(images/'+guy+'.png)');
 
         var cumulative = data.cumulative;
         var hits=0,doubles=0,triples=0,RBI=0,HR=0,R=0;
@@ -298,13 +298,12 @@
       pitchData.forEach(function(data){
         var guy = data.seasonal[0].player;
         data.player = guy;
-        console.log(data)
         var name = guy.split('_').join(' ');
         data.display = name;
 
         pitchDiv.select('.playerList').append('div')
-          .attr('class','playerBtn').attr('player',guy).text(name)
-          //.style('background-image', 'url(images/'+guy+'.png)')
+          .attr('class','playerBtn').attr('player',guy)//.text(name)
+          .style('background-image', 'url(images/'+guy+'.png)');
 
         var cumulative = data.cumulative;
         var hits=0,wins=0,losses=0,K=0,HR=0,ER=0,BB=0;
@@ -436,6 +435,18 @@ Mantle - http://www.notablebiographies.com/images/uewb_07_img0457.jpg
 Cobb - http://www.sikids.com/sites/default/files/multimedia/photo_gallery/1005/mlb.unbreakable.baseball.records/images/ty-cobb.jpg
 Mays - http://sportsnaut.com/wp-content/uploads/2014/07/0168.jpg
 Williams - http://nextweekinsports.com/wp-content/uploads/2014/07/ted-williams.jpg
+*/
+/*
+Young - http://www.biografiasyvidas.com/biografia/y/fotos/young_cy.jpg
+Grove - http://www.sikids.com/sites/default/files/multimedia/photo_gallery/1005/famous.lefties.in.sports/images/lefty-grove.jpg
+Plank - http://bioproj.sabr.org/bp_ftp/images/PlankEddie.jpg
+Alexander - https://upload.wikimedia.org/wikipedia/commons/d/d7/Grover_Cleveland_Alexander.jpg
+Clemens - http://static4.businessinsider.com/image/4f91b2b2ecad04093e000035/50-year-old-roger-clemens-is-returning-to-professional-baseball.jpg
+Seaver - http://a.espncdn.com/media/pg2/2001/0801/photo/a_seaver_i.jpg
+Gibson - http://a.espncdn.com/photo/2013/1021/WS13_gibson_1967.jpg
+Mathewson - http://www.sikids.com/sites/default/files/multimedia/photo_gallery/1010/mlb.best.postseason.pitching.debuts/images/christy-mathewson.jpg
+Drysdale - http://1960sbaseball.com/blog/wp-content/uploads/2014/12/don_drysdale_58.jpg
+Johnson - http://bioproj.sabr.org/bp_ftp/images2/JohnsonWalter.jpg
 */
   	
   </script>
