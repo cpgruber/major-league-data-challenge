@@ -72,6 +72,7 @@
     		<option value='BA'>Batting Average</option>
     		<option value='slug'>Slugging</option>
     		<option value='runs'>Runs</option>
+        <option value='OPS'>OPS</option>
     	</select>
       
       <label><input type="radio" value="time" name="optradio1" checked>Over Time</label>
@@ -139,7 +140,7 @@
         .row(function(d) { 
           return {
             player:d.Player,year:+d.Year,hits:+d.H,doubles:+d['2B'],triples:+d['3B'],RBI:+d.RBI,HR:+d.HR,runs:+d.R,
-            TB:+d.TB,AB:+d.AB,slug:+d.SLG,BA:+d.BA,BB:+d.BB,IBB:+d.IBB,SB:+d.SB,CS:+d.CS,K:+d.SO,G:+d.G
+            TB:+d.TB,AB:+d.AB,slug:+d.SLG,BA:+d.BA,BB:+d.BB,IBB:+d.IBB,SB:+d.SB,CS:+d.CS,K:+d.SO,G:+d.G,OPS:+d.OPS
           }
         })
         .get(function(error, rows) { 
@@ -168,6 +169,38 @@
         })
     }
 
+    var hitCompare = {career:null,seasonAvg:null};
+    d3.csv('hitters/hitting_comp.csv').row(function(d){
+      if (d.Age == '162 Game Avg.'||(d.Age !== '' && d.Age !== '162 Game Avg.' && d.Age !== 'Age')){
+        return {
+            player:d.Player,year:d.Year,hits:+d.H,doubles:+d['2B'],triples:+d['3B'],RBI:+d.RBI,HR:+d.HR,runs:+d.R,
+            TB:+d.TB,AB:+d.AB,slug:+d.SLG,BA:+d.BA,BB:+d.BB,IBB:+d.IBB,SB:+d.SB,CS:+d.CS,K:+d.SO,G:+d.G,OPS:+d.OPS
+          }
+      }
+    })
+    .get(function(error, rows){
+      hitCompare.career = JSON.parse(JSON.stringify(rows)).filter(function(d){return (d.year !== '' && d.year !== '162 Game Avg.' && d.year !== 'Year')});
+      hitCompare.seasonAvg = JSON.parse(JSON.stringify(rows)).filter(function(d){return d.year == '162 Game Avg.'});
+      //make compare chart....
+      //console.log(hitCompare);
+    });
+
+    var pitchCompare = {career:null,seasonAvg:null};
+    d3.csv('pitchers/pitching_comp.csv').row(function(d){
+      if (d.Age == '162 Game Avg.'||(d.Age !== '' && d.Age !== '162 Game Avg.' && d.Age !== 'Age')){
+        return {
+            player:d.Player,year:d.Year,wins:+d.W,losses:+d.L,ERA:+d.ERA,hits:+d.H,IP:+d.IP,ER:+d.ER,HR:+d.HR,K:+d.SO,
+            WHIP:+d.WHIP,H9:+d.H9,BB:+d.BB,IBB:+d.IBB,HR9:+d.HR9,BB9:+d.BB9,K9:+d.SO9,KpW:+d['SO/W']
+          }
+      }
+    })
+    .get(function(error, rows){
+      pitchCompare.career = JSON.parse(JSON.stringify(rows)).filter(function(d){return (d.year !== '' && d.year !== '162 Game Avg.' && d.year !== 'Year')});
+      pitchCompare.seasonAvg = JSON.parse(JSON.stringify(rows)).filter(function(d){return d.year == '162 Game Avg.'});
+      //make compare chart....
+      //console.log(pitchCompare);
+    });
+
   	function makeHitters(){
   		//bind data to player
       hitData.forEach(function(data){
@@ -181,21 +214,42 @@
           .style('background-image', 'url(images/'+guy+'.png)');
 
         var cumulative = data.cumulative;
-        var hits=0,doubles=0,triples=0,RBI=0,HR=0,R=0;
+        var hits=0,doubles=0,triples=0,RBI=0,HR=0,R=0,AB=0,TB=0,OPS=0;
         for (var b=0;b<cumulative.length;b++){
           var thisData = cumulative[b];
+          //do this to preserve breaks for missed seasons; could also remove record, but would then
+          //have to loop through backwards and search for nulls
+          if (typeof thisData.hits !== 'number'){
+            thisData.hits = 'null';
+            thisData.doubles = 'null';
+            thisData.triples = 'null';
+            thisData.RBI = 'null';
+            thisData.HR = 'null';
+            thisData.runs = 'null';
+            thisData.BA = 'null';
+            thisData.slug = 'null';
+            thisData.OPS = 'null';
+            continue;
+          }
+
           hits += thisData.hits;
           doubles += thisData.doubles;
           triples += thisData.triples;
           RBI += thisData.RBI;
           HR += thisData.HR;
           R += thisData.runs;
+          AB += thisData.AB;
+          TB += thisData.TB;
+          OPS += thisData.OPS;
           thisData.hits = hits;
           thisData.doubles = doubles;
           thisData.triples = triples;
           thisData.RBI = RBI;
           thisData.HR = HR;
           thisData.runs = R;
+          thisData.BA = (hits/AB);
+          thisData.slug = (TB/AB);
+          thisData.OPS = OPS/(b+1);
         }
       });
 
@@ -218,8 +272,8 @@
   			.attr('transform','translate('+margins.left+','+0+')')
   			.attr('class','yaxis')
 
-	  	var lineFx = d3.svg.line()
-	        .interpolate('step-after');
+	  	var lineFx = d3.svg.line()//.interpolate('basis');
+	        //.interpolate('step-after');
 
   		function lineChange(field,set){
 	  		var fieldMax = d3.max(hitData, function(d) {
@@ -227,6 +281,8 @@
 	  				return e[field];
 	  			});
 	  		});
+        if(set == 'seasonal'){lineFx.interpolate('basis')}else{lineFx.interpolate('step-after')};
+        //dunno if i should keep that ^^
 	  		y.domain([0,fieldMax]);
 	      lineFx.defined(function(d) { return d[field] >= 0; }).y(function (d) { return y(d[field]) });
 	  		lines.transition().duration(500).attr('d', function(d){return lineFx(d[set])});
@@ -306,7 +362,7 @@
           .style('background-image', 'url(images/'+guy+'.png)');
 
         var cumulative = data.cumulative;
-        var hits=0,wins=0,losses=0,K=0,HR=0,ER=0,BB=0;
+        var hits=0,wins=0,losses=0,K=0,HR=0,ER=0,BB=0,IP=0;
         for (var b=0;b<cumulative.length;b++){
           var thisData = cumulative[b];
           hits += thisData.hits;
@@ -316,6 +372,7 @@
           HR += thisData.HR;
           ER += thisData.ER;
           BB += thisData.BB;
+          IP += thisData.IP;
           thisData.hits = hits;
           thisData.wins = wins;
           thisData.losses = losses;
@@ -323,6 +380,8 @@
           thisData.HR = HR;
           thisData.ER = ER;
           thisData.BB = BB;
+          thisData.ERA = 9*(ER/IP);
+          thisData.WHIP = (BB+hits)/IP;
         }
       });
 
@@ -346,8 +405,8 @@
         .attr('transform','translate('+margins.left+','+0+')')
         .attr('class','yaxis')
 
-      var lineFx = d3.svg.line()
-          .interpolate('step-after');
+      var lineFx = d3.svg.line().interpolate('basis');
+          //.interpolate('step-after');
 
       function lineChange(field,set){
         var fieldMax = d3.max(pitchData, function(d) {
