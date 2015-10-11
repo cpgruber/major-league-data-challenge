@@ -285,7 +285,7 @@
   			.attr('transform','translate('+margins.left+','+0+')')
   			.attr('class','yaxis')
 
-	  	var lineFx = d3.svg.line().interpolate('basis');
+	  	var lineFx = d3.svg.line().interpolate('linear');
 
   		function lineChange(field,set){
 	  		var fieldMax = d3.max(hitData, function(d) {
@@ -379,26 +379,44 @@
       function clickPlayer(player){
         var time  = hitDiv.select('input[name="optradio1"]:checked').node().value;
         timeChange(time)
-        /*d3.select('g.player.'+player)
-          .on('mouseover',toolHov).on('mousemove',toolHov).on('mouseout',toolUnhov);*/
+        hitSvg
+          .on('mouseover',toolHov).on('mousemove',toolHov).on('mouseout',toolUnhov);
       }
         //when you click a player, zoom the x axis to that player's career span, make it hoverable. 
         //click on another player to do the same. click reset to zoom out
-      /*function toolHov(d){
-        console.log(d);
+      function toolHov(){
+        var player = hitDiv.select('.playerBtn.clicked').attr('player');
+        var data = hitData.filter(function(b){return b.player == player})[0];
+        var field = hitDiv.select('#clicker').node().value;
+        var time = hitDiv.select('input[name="optradio1"]:checked').node().value;
+        var set  = hitDiv.select('input[name="optradio2"]:checked').node().value;
+
         var left = d3.event.offsetX;
         var year = d3.round(xInv(left),0);
         var top = d3.event.offsetY;
-        hitTip.style('visibility','visible')
-          .attr('transform','translate('+left+','+top+')');
+
+        var xLeft = x(year);
+        var yData = (time == 'time')?data[set].filter(function(b){return b.year == year})[0]:
+        data[set][year-1];
+
+        if (yData){
+          var yTop = y(yData[field]);
+          if (yTop){
+            hitTip.style('visibility','visible')
+              .attr('transform','translate('+xLeft+','+yTop+')');   
+          } 
+        }else{
+          hitTip.style('visibility','hidden')
+        }
       }
-      function toolUnhov(d){
+      function toolUnhov(){
         hitTip.style('visibility','hidden');
-      }*/
+      }
 
       hitDiv.selectAll('.playerBtn').on('click',function(){
         var clickedClasses = d3.select(this).attr('class').split(" ");
-        hitDiv.selectAll('g.player').on('mousemove',null).on('mouseover',null).on('mouseout',null);
+        //hitDiv.selectAll('g.player').on('mousemove',null).on('mouseover',null).on('mouseout',null);
+        hitSvg.on('mousemove',null).on('mouseover',null).on('mouseout',null);
         if (clickedClasses.indexOf('clicked') !== -1){
           hitDiv.selectAll('.playerBtn').attr('class','playerBtn')
             .on('mouseover', function(){
@@ -481,7 +499,7 @@
         .attr('transform','translate('+margins.left+','+0+')')
         .attr('class','yaxis')
 
-      var lineFx = d3.svg.line().interpolate('basis');
+      var lineFx = d3.svg.line().interpolate('linear');
 
       function lineChange(field,set){
         var fieldMax = d3.max(pitchData, function(d) {
@@ -575,22 +593,37 @@
       function clickPlayer(player){
         var time  = pitchDiv.select('input[name="optradio3"]:checked').node().value;
         timeChange(time)
-        /*d3.select('g.player.'+player)
-          .on('mouseover',toolHov).on('mousemove',toolHov).on('mouseout',toolUnhov);*/
+        pitchSvg
+          .on('mouseover',toolHov).on('mousemove',toolHov).on('mouseout',toolUnhov);
       }
         //when you click a player, zoom the x axis to that player's career span, make it hoverable. 
         //click on another player to do the same. click reset to zoom out
-      /*function toolHov(d){
-        console.log(d);
+      function toolHov(){
+        var player = pitchDiv.select('.playerBtn.clicked').attr('player');
+        var data = pitchData.filter(function(b){return b.player == player})[0];
+        var field = pitchDiv.select('#clicker').node().value;
+        var time = pitchDiv.select('input[name="optradio3"]:checked').node().value;
+        var set  = pitchDiv.select('input[name="optradio4"]:checked').node().value;
+
         var left = d3.event.offsetX;
         var year = d3.round(xInv(left),0);
         var top = d3.event.offsetY;
-        hitTip.style('visibility','visible')
-          .attr('transform','translate('+left+','+top+')');
+
+        var xLeft = x(year);
+        var yData = (time == 'time')?data[set].filter(function(b){return b.year == year})[0]:
+        data[set][year-1];
+
+        if (yData){
+          var yTop = y(yData[field]);
+          pitchTip.style('visibility','visible')
+            .attr('transform','translate('+xLeft+','+yTop+')');    
+        }else{
+          pitchTip.style('visibility','hidden')
+        }
       }
-      function toolUnhov(d){
-        hitTip.style('visibility','hidden');
-      }*/
+      function toolUnhov(){
+        pitchTip.style('visibility','hidden');
+      }
 
       pitchDiv.selectAll('.playerBtn').on('click',function(){
         var clickedClasses = d3.select(this).attr('class').split(" ");
