@@ -81,7 +81,7 @@ function makeHitCompare(){
   var scale3 = d3.scale.linear().range([height/2,height-margins.bottom]).domain([0,maxes[2]]);
   var scale4 = d3.scale.linear().range([width/2,margins.left]).domain([0,maxes[3]]);
 
-  var players = hitSvg2.selectAll('.player').data(hitCompare.career).enter().append('g').attr('class','player');
+  var players = hitSvg2.selectAll('.player').data(hitCompare.career)/*.enter().append('g')*/.attr('class','player');
   players.append('circle').attr('r',5)
     .attr('transform',function(d){
       return 'translate('+(width/2)+','+scale1(d.HR)+')';
@@ -122,12 +122,14 @@ function makeHitters(){
   hitData.forEach(function(data){
     var guy = data.seasonal[0].player;
     data.player = guy;
-    var name = guy.split('_').join(' ');
+    var name = guy.replace('_',' ');//guy.split('_').join(' ');
     data.display = name;
 
-    hitDiv.select('.playerList').append('div')
-      .attr('class','playerBtn').attr('player',guy)
-      .style('background-image', 'url(images/'+guy+'.png)');
+    var btn = hitDiv.select('.playerList').append('div')
+      .attr('class','playerBtn').attr('player',guy);
+    btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
+    btn.append('p').text(name);
+      //.style('background-image', 'url(images/'+guy+'.png)');
 
     var cumulative = data.cumulative;
     var hits=0,doubles=0,triples=0,RBI=0,HR=0,R=0,AB=0,TB=0,OPS=0;
@@ -354,9 +356,14 @@ function makePitchers(){
     var name = guy.split('_').join(' ');
     data.display = name;
 
-    pitchDiv.select('.playerList').append('div')
-      .attr('class','playerBtn').attr('player',guy)
-      .style('background-image', 'url(images/'+guy+'.png)');
+    // pitchDiv.select('.playerList').append('div')
+    //   .attr('class','playerBtn').attr('player',guy)
+    //   .style('background-image', 'url(images/'+guy+'.png)');
+
+    var btn = pitchDiv.select('.playerList').append('div')
+      .attr('class','playerBtn').attr('player',guy);
+    btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
+    btn.append('p').text(name);
 
     var cumulative = data.cumulative;
     var hits=0,wins=0,losses=0,K=0,HR=0,ER=0,BB=0,IP=0;
