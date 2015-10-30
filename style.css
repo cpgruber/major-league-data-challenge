@@ -15,20 +15,24 @@
   background-position:center;
   background-color:rgba(200,0,200,0.1);
   cursor:pointer;
+  line-height: 100px;
+  vertical-align: middle;
   /*position:relative;*/
 }
 .playerBtn img{
   height:100px;
   width:100px;
+  float:left;
 }
 .playerBtn p{
   /*position:absolute;*/
   width:100%;
-  padding-left:100px;
+  text-align: center;
+  /*padding-left:100px;*/
+
 }
 .clicked{
   background-color:rgba(255,255,0,0.1);
-  border-radius:100%;
 }
 .reset{
   display:block;
