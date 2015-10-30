@@ -5,7 +5,7 @@ var height = 500, margins = {left:50,right:50,top:20,bottom:20};
 var hitDiv = d3.select('#hitting');
 var pitchDiv = d3.select('#pitching');
 var hitSvg = hitDiv.select('.svgContain').append('svg').attr('height',height).attr('width',width);
-var hitSvg2 = hitDiv.select('.svgContain').append('svg').attr('height',height).attr('width',width);
+// var hitSvg2 = hitDiv.select('.svgContain').append('svg').attr('height',height).attr('width',width);
 var pitchSvg = pitchDiv.select('.svgContain').append('svg').attr('height',height).attr('width',width);
 
 var hitData = [];
@@ -60,46 +60,46 @@ d3.csv('hitters/hitting_comp.csv').row(function(d){
 .get(function(error, rows){
   hitCompare.career = JSON.parse(JSON.stringify(rows)).filter(function(d){return (d.year !== '' && d.year !== '162 Game Avg.' && d.year !== 'Year')});
   hitCompare.seasonAvg = JSON.parse(JSON.stringify(rows)).filter(function(d){return d.year == '162 Game Avg.'});
-  makeHitCompare();
+  //makeHitCompare();
 });
 
-function makeHitCompare(){
-  console.log(hitCompare);
-
-  var fields = ['HR','hits','RBI','runs'];
-  var maxes = [];
-
-  fields.forEach(function(field){
-    var max = d3.max(hitCompare.career, function(d) {
-      return d[field];
-    });
-    maxes.push(max)
-  });
-
-  var scale1 = d3.scale.linear().range([height/2,margins.top]).domain([0,maxes[0]]);
-  var scale2 = d3.scale.linear().range([width/2,width-margins.right]).domain([0,maxes[1]]);
-  var scale3 = d3.scale.linear().range([height/2,height-margins.bottom]).domain([0,maxes[2]]);
-  var scale4 = d3.scale.linear().range([width/2,margins.left]).domain([0,maxes[3]]);
-
-  var players = hitSvg2.selectAll('.player').data(hitCompare.career)/*.enter().append('g')*/.attr('class','player');
-  players.append('circle').attr('r',5)
-    .attr('transform',function(d){
-      return 'translate('+(width/2)+','+scale1(d.HR)+')';
-    })
-  players.append('circle').attr('r',5)
-    .attr('transform',function(d){
-      return 'translate('+(scale2(d.hits))+','+(height/2)+')';
-    })
-  players.append('circle').attr('r',5)
-    .attr('transform',function(d){
-      return 'translate('+(width/2)+','+scale3(d.RBI)+')';
-    })
-  players.append('circle').attr('r',5)
-    .attr('transform',function(d){
-      return 'translate('+(scale4(d.runs))+','+(height/2)+')';
-    })
-
-}
+// function makeHitCompare(){
+//   console.log(hitCompare);
+//
+//   var fields = ['HR','hits','RBI','runs'];
+//   var maxes = [];
+//
+//   fields.forEach(function(field){
+//     var max = d3.max(hitCompare.career, function(d) {
+//       return d[field];
+//     });
+//     maxes.push(max)
+//   });
+//
+//   var scale1 = d3.scale.linear().range([height/2,margins.top]).domain([0,maxes[0]]);
+//   var scale2 = d3.scale.linear().range([width/2,width-margins.right]).domain([0,maxes[1]]);
+//   var scale3 = d3.scale.linear().range([height/2,height-margins.bottom]).domain([0,maxes[2]]);
+//   var scale4 = d3.scale.linear().range([width/2,margins.left]).domain([0,maxes[3]]);
+//
+//   //var players = //hitSvg2.selectAll('.player').data(hitCompare.career)/*.enter().append('g')*/.attr('class','player');
+//   // players.append('circle').attr('r',5)
+//   //   .attr('transform',function(d){
+//   //     return 'translate('+(width/2)+','+scale1(d.HR)+')';
+//   //   })
+//   // players.append('circle').attr('r',5)
+//   //   .attr('transform',function(d){
+//   //     return 'translate('+(scale2(d.hits))+','+(height/2)+')';
+//   //   })
+//   // players.append('circle').attr('r',5)
+//   //   .attr('transform',function(d){
+//   //     return 'translate('+(width/2)+','+scale3(d.RBI)+')';
+//   //   })
+//   // players.append('circle').attr('r',5)
+//   //   .attr('transform',function(d){
+//   //     return 'translate('+(scale4(d.runs))+','+(height/2)+')';
+//   //   })
+//
+// }
 
 var pitchCompare = {career:null,seasonAvg:null};
 d3.csv('pitchers/pitching_comp.csv').row(function(d){
