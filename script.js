@@ -11,7 +11,13 @@ var pitchSvg = pitchDiv.select('.svgContain').append('svg').attr('height',height
 var hitData = [];
 var pitchData = [];
 
-var hitTip = hitSvg.append('circle').attr('r',5).attr('fill','red').style('visibility','hidden');
+var hitTip = hitSvg.append("g").style('visibility','hidden');
+hitTip.append('line')
+  .attr('x1',0).attr('x2',0)
+  .style('stroke-width',2).style('stroke','black');
+hitTip.append('circle').attr('r',15).attr('fill','white');//.style('visibility','hidden');
+hitTip.append('text').attr('text-anchor','middle').attr('dy',7.5);
+
 var pitchTip = pitchSvg.append('circle').attr('r',5).attr('fill','red').style('visibility','hidden');
 
 for (var i=0;i<10;i++){
@@ -305,13 +311,21 @@ function makeHitters(){
 
     if (yData){
       var yTop = y(yData[field]);
+      var mid = y.domain()[1]/2;
+      cTop = (yData[field]>mid)?100:-100;
+      //y2 = (yData[field]>mid)?100:-100;
       if (yTop){
         hitTip.style('visibility','visible')
           .attr('transform','translate('+xLeft+','+yTop+')');
+        hitTip.selectAll('*').attr('transform','translate(0,'+cTop+')');
+        hitTip.select('line').attr('y1',0).attr('y2',cTop*(-1))
+        //hitTip.select('circle').attr('transform','translate(0,'+cTop+')');
       }
+      //hitTip.select('line').attr('y1',yTop).attr('y2',y(yData[field]))
     }else{
       hitTip.style('visibility','hidden')
     }
+    hitTip.select('text').text(d3.round(yData[field],3));
   }
   function toolUnhov(){
     hitTip.style('visibility','hidden');
