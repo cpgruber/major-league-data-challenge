@@ -15,10 +15,10 @@ var mlb = {
   getPageComponents:function(){
     this.page.hitDiv = d3.select('#hitting');
     this.page.pitchDiv = d3.select('#pitching');
-    this.page.hitSvg = this.page.hitDiv.append('svg')
-      .attr('height',this.svgAtt.height).attr('width',this.svgAtt.width);
-    this.page.pitchSvg = this.page.pitchDiv.append('svg')
-      .attr('height',this.svgAtt.height).attr('width',this.svgAtt.width);
+    // this.page.hitSvg = this.page.hitDiv.append('svg')
+    //   .attr('height',this.svgAtt.height).attr('width',this.svgAtt.width);
+    // this.page.pitchSvg = this.page.pitchDiv.append('svg')
+    //   .attr('height',this.svgAtt.height).attr('width',this.svgAtt.width);
   }
 }
 mlb.getPageComponents();
