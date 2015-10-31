@@ -122,11 +122,11 @@ function makeHitters(){
   hitData.forEach(function(data){
     var guy = data.seasonal[0].player;
     data.player = guy;
-    var name = guy.replace('_',' ');//guy.split('_').join(' ');
+    var name = guy.replace('_',' ');
     data.display = name;
 
     var btn = hitDiv.select('.playerList').append('div')
-      .attr('class','playerBtn').attr('player',guy)//.text(name);;
+      .attr('class','playerBtn').attr('player',guy);
     btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
     btn.append('p').text(name);
       //.style('background-image', 'url(images/'+guy+'.png)');

@@ -44,6 +44,7 @@ h2{
   overflow:hidden;
   font-size: 24px;
   text-align: center;
+  cursor:pointer;
 }
 .playerBtn img{
   height:100px;
@@ -68,4 +69,34 @@ select,label{
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
+}
+[type=radio]{
+  display:none;
+}
+label{
+  position:relative;
+  padding-right:1.5em;
+}
+label:after{
+  content:'';
+  display:block;
+  position:absolute;
+  right:0;
+  top:5px;
+  width:16px;
+  height:16px;
+  background:gray;
+  border-radius:50%;
+}
+[type=radio]:checked label::before{
+  content:'';
+  display:block;
+  position:absolute;
+  right:4px;
+  top:9px;
+  width:8px;
+  height:8px;
+  background: #fff;
+  z-index:2;
+  border-radius:100%;
 }
