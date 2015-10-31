@@ -18,44 +18,45 @@
   <h1>Major League Data Challenge</h1>
   <div id='hitting' class='container'>
     <h2>Best Bats</h2>
-  	<select id='clicker'>
-  		<option value='HR'>Homers</option>
-  		<option value='hits'>Hits</option>
-  		<option value='RBI'>Ribbys</option>
-  		<option value='BA'>Batting Average</option>
-  		<option value='slug'>Slugging</option>
-  		<option value='runs'>Runs</option>
-      <option value='OPS'>OPS</option>
-  	</select>
+    <div class='controls'>
+    	<select id='clicker'>
+    		<option value='HR'>Homers</option>
+    		<option value='hits'>Hits</option>
+    		<option value='RBI'>Ribbys</option>
+    		<option value='BA'>Batting Average</option>
+    		<option value='slug'>Slugging</option>
+    		<option value='runs'>Runs</option>
+        <option value='OPS'>OPS</option>
+    	</select>
 
-    <label><input type="radio" value="time" name="optradio1" checked>Over Time</label>
-    <label><input type="radio" value="career" name="optradio1">Over Career</label>
+      <label><input type="radio" value="time" name="optradio1" checked>Over Time</label>
+      <label><input type="radio" value="career" name="optradio1">Over Career</label>
 
-    <label><input type="radio" value="seasonal" name="optradio2" checked>Single-Season</label>
-    <label><input type="radio" value="cumulative" name="optradio2">Cumulatively</label>
-
+      <label><input type="radio" value="seasonal" name="optradio2" checked>Single-Season</label>
+      <label><input type="radio" value="cumulative" name="optradio2">Cumulatively</label>
+    </div>
     <div class='playerList hitters'></div>
     <div class='svgContain eight columns'></div>
   </div>
 
   <div id='pitching' class='container'>
     <h2>Best Arms</h2>
+    <div class='controls'>
+      <select id='clicker'>
+        <option value='wins'>Wins</option>
+        <option value='losses'>Losses</option>
+        <option value='K'>Strikeouts</option>
+        <option value='ERA'>ERA</option>
+        <option value='ER'>Earned Runs</option>
+        <option value='WHIP'>WHIP</option>
+      </select>
 
-    <select id='clicker'>
-      <option value='wins'>Wins</option>
-      <option value='losses'>Losses</option>
-      <option value='K'>Strikeouts</option>
-      <option value='ERA'>ERA</option>
-      <option value='ER'>Earned Runs</option>
-      <option value='WHIP'>WHIP</option>
-    </select>
+      <label><input type="radio" value="time" name="optradio3" checked>Over Time</label>
+      <label><input type="radio" value="career" name="optradio3">Over Career</label>
 
-    <label><input type="radio" value="time" name="optradio3" checked>Over Time</label>
-    <label><input type="radio" value="career" name="optradio3">Over Career</label>
-
-    <label><input type="radio" value="seasonal" name="optradio4" checked>Single-Season</label>
-    <label><input type="radio" value="cumulative" name="optradio4">Cumulatively</label>
-
+      <label><input type="radio" value="seasonal" name="optradio4" checked>Single-Season</label>
+      <label><input type="radio" value="cumulative" name="optradio4">Cumulatively</label>
+    </div>
     <div class='playerList pitchers'></div>
     <div class='svgContain eight columns'></div>
   </div>

@@ -126,9 +126,9 @@ function makeHitters(){
     data.display = name;
 
     var btn = hitDiv.select('.playerList').append('div')
-      .attr('class','playerBtn').attr('player',guy).text(name);;
+      .attr('class','playerBtn').attr('player',guy)//.text(name);;
     btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
-    //btn.append('p').text(name);
+    btn.append('p').text(name);
       //.style('background-image', 'url(images/'+guy+'.png)');
 
     var cumulative = data.cumulative;
