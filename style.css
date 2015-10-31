@@ -59,3 +59,8 @@
 .svgContain{
   position:relative;
 }
+.xaxis path, .xaxis line,.yaxis path, .yaxis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
