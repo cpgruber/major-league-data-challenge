@@ -6,81 +6,61 @@
      <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>MLB Data Viz challenge</title>
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css' rel='stylesheet' type='text/css'/>
+    <!-- <link href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css' rel='stylesheet' type='text/css'/> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
 
-    <link href="style.css" rel="stylesheet"/>
+    <link href="new_style.css" rel="stylesheet"/>
 
   </head>
 
   <body>
   <div id='hitting' class='container'>
-    <div class='row'>
-      <div class='twelve columns'>
-        <h2>Best Bats</h2>
-      </div>
-    </div>
-    <div class='row'>
-    <div class='twelve columns'>
-    	<select id='clicker'>
-    		<option value='HR'>Homers</option>
-    		<option value='hits'>Hits</option>
-    		<option value='RBI'>Ribbys</option>
-    		<option value='BA'>Batting Average</option>
-    		<option value='slug'>Slugging</option>
-    		<option value='runs'>Runs</option>
-        <option value='OPS'>OPS</option>
-    	</select>
+    <h2>Best Bats</h2>
+  	<select id='clicker'>
+  		<option value='HR'>Homers</option>
+  		<option value='hits'>Hits</option>
+  		<option value='RBI'>Ribbys</option>
+  		<option value='BA'>Batting Average</option>
+  		<option value='slug'>Slugging</option>
+  		<option value='runs'>Runs</option>
+      <option value='OPS'>OPS</option>
+  	</select>
 
-      <label><input type="radio" value="time" name="optradio1" checked>Over Time</label>
-      <label><input type="radio" value="career" name="optradio1">Over Career</label>
+    <label><input type="radio" value="time" name="optradio1" checked>Over Time</label>
+    <label><input type="radio" value="career" name="optradio1">Over Career</label>
 
-      <label><input type="radio" value="seasonal" name="optradio2" checked>Single-Season</label>
-      <label><input type="radio" value="cumulative" name="optradio2">Cumulatively</label>
-    </div>
-    </div>
-    <div class='row'>
-      <div class='four columns'>
-        <div class='playerList hitters'></div>
-      </div>
-      <div class='svgContain eight columns'></div>
-    </div>
+    <label><input type="radio" value="seasonal" name="optradio2" checked>Single-Season</label>
+    <label><input type="radio" value="cumulative" name="optradio2">Cumulatively</label>
+
+    <div class='playerList hitters'></div>
+    <div class='svgContainer'></div>
   </div>
 
   <div id='pitching' class='container'>
-    <div class='row'>
-      <div class='twelve columns'>
-        <h2>Best Arms</h2>
-      </div>
-    </div>
-    <div class='row'>
-    <div class='twelve columns'>
-      <select id='clicker'>
-        <option value='wins'>Wins</option>
-        <option value='losses'>Losses</option>
-        <option value='K'>Strikeouts</option>
-        <option value='ERA'>ERA</option>
-        <option value='ER'>Earned Runs</option>
-        <option value='WHIP'>WHIP</option>
-      </select>
+    <h2>Best Arms</h2>
 
-      <label><input type="radio" value="time" name="optradio3" checked>Over Time</label>
-      <label><input type="radio" value="career" name="optradio3">Over Career</label>
+    <select id='clicker'>
+      <option value='wins'>Wins</option>
+      <option value='losses'>Losses</option>
+      <option value='K'>Strikeouts</option>
+      <option value='ERA'>ERA</option>
+      <option value='ER'>Earned Runs</option>
+      <option value='WHIP'>WHIP</option>
+    </select>
 
-      <label><input type="radio" value="seasonal" name="optradio4" checked>Single-Season</label>
-      <label><input type="radio" value="cumulative" name="optradio4">Cumulatively</label>
-    </div>
-    </div>
-    <div class='row'>
-      <div class='four columns'>
-        <div class='playerList pitchers'></div>
-      </div>
-      <div class='svgContain eight columns'></div>
-    </div>
+    <label><input type="radio" value="time" name="optradio3" checked>Over Time</label>
+    <label><input type="radio" value="career" name="optradio3">Over Career</label>
+
+    <label><input type="radio" value="seasonal" name="optradio4" checked>Single-Season</label>
+    <label><input type="radio" value="cumulative" name="optradio4">Cumulatively</label>
+
+    <div class='playerList pitchers'></div>
+    <div class='svgContain eight columns'></div>
   </div>
+
   <script type='text/javascript' src='script.js'></script>
-    <script type='text/javascript' src='new_script.js'></script>
+  <script type='text/javascript' src='new_script.js'></script>
   <!--<script>
 //photo-credits
 /*
@@ -109,5 +89,5 @@ Johnson - http://bioproj.sabr.org/bp_ftp/images2/JohnsonWalter.jpg
 */
 
   </script>-->
-
+  </body>
 </html>
