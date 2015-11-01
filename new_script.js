@@ -11,6 +11,14 @@ var mlb = {
       bottom:20
     }
   },
+  buildScales:function(){
+    this.svgAtt.xScale = d3.scale.linear()
+      .range([this.svgAtt.margins.left,this.svgAtt.width-this.svgAtt.margins.right]);
+    this.svgAtt.xScale_inv = d3.scale.linear()
+      .domain([this.svgAtt.margins.left,this.svgAtt.width-this.svgAtt.margins.right]);
+    this.svgAtt.yScale = d3.scale.linear()
+      .range([(this.svgAtt.height-this.svgAtt.margins.bottom),this.svgAtt.margins.top]);
+  }
   page:{},
   getPageComponents:function(){
     this.page.hitDiv = d3.select('#hitting');
@@ -24,6 +32,8 @@ var mlb = {
     this.page.hitTip.append('line').attr('x1',0).attr('x2',0).style('stroke-width',1).style('stroke','black');
     this.page.hitTip.append('circle').attr('r',15).attr('fill','white');
     this.page.hitTip.append('text').attr('text-anchor','middle').attr('dy',7.5);
+
+    this.buildScales();
   },
   playerData:{
     hitters:[],
