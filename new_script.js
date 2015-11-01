@@ -29,39 +29,53 @@ var mlb = {
     hitters:[],
     pitchers:[]
   },
-  dataTemplates:{
-    hitters:function(d){
-      return {
-        player:d.Player,year:+d.Year,hits:+d.H,doubles:+d['2B'],triples:+d['3B'],RBI:+d.RBI,HR:+d.HR,runs:+d.R,
-        TB:+d.TB,AB:+d.AB,slug:+d.SLG,BA:+d.BA,BB:+d.BB,IBB:+d.IBB,SB:+d.SB,CS:+d.CS,K:+d.SO,G:+d.G,OPS:+d.OPS
-      }
-    },
-    pitchers:function(d){
-      return {
-        player:d.Player,year:+d.Year,wins:+d.W,losses:+d.L,ERA:+d.ERA,hits:+d.H,IP:+d.IP,ER:+d.ER,HR:+d.HR,K:+d.SO,
-        WHIP:+d.WHIP,H9:+d.H9,BB:+d.BB,IBB:+d.IBB,HR9:+d.HR9,BB9:+d.BB9,K9:+d.SO9,KpW:+d['SO/W']
-      }
-    }
-  },
   getData:function(set){
     var that = this;
     var data = this.playerData[set];
     for (var i=0;i<10;i++){
       d3.csv(set+'/player'+i+'.csv')
         .row(function(d) {
-          return that.dataTemplates[set];
+          var da;
+          if (set == 'hitters'){
+            da = {
+              player:d.Player,year:+d.Year,hits:+d.H,doubles:+d['2B'],triples:+d['3B'],RBI:+d.RBI,HR:+d.HR,runs:+d.R,
+              TB:+d.TB,AB:+d.AB,slug:+d.SLG,BA:+d.BA,BB:+d.BB,IBB:+d.IBB,SB:+d.SB,CS:+d.CS,K:+d.SO,G:+d.G,OPS:+d.OPS
+            }
+          }else{
+            da = {
+              player:d.Player,year:+d.Year,wins:+d.W,losses:+d.L,ERA:+d.ERA,hits:+d.H,IP:+d.IP,ER:+d.ER,HR:+d.HR,K:+d.SO,
+              WHIP:+d.WHIP,H9:+d.H9,BB:+d.BB,IBB:+d.IBB,HR9:+d.HR9,BB9:+d.BB9,K9:+d.SO9,KpW:+d['SO/W']
+            }
+          }
+          return da;
         })
         .get(function(error, rows) {
           var cumulative = JSON.parse(JSON.stringify(rows));
           var playerData = {seasonal:rows,cumulative:cumulative};
           data.push(playerData);
           if (data.length === 10){
-            console.log(data);
-            //makeHitters();
-            //makeChart()
+            that.makeChart(set);
           }
         })
     }
+  },
+  makeChart(set){
+    var that = this;
+    var data = this.playerData[set];
+    this.makeButtons(data,that);
+
+  },
+  makeButtons(data,that){
+    data.forEach(function(dp){
+      var guy = dp.seasonal[0].player;
+      dp.player = guy;
+      var name = guy.replace('_',' ');
+      dp.display = name;
+      var btn = that.page.hitDiv.select('.playerList').append('div')
+        .attr('class','playerBtn').attr('player',guy);
+      btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
+      btn.append('p').text(name);
+    })
   }
 }
 mlb.getPageComponents();

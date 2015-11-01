@@ -135,7 +135,6 @@ function makeHitters(){
       .attr('class','playerBtn').attr('player',guy);
     btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
     btn.append('p').text(name);
-      //.style('background-image', 'url(images/'+guy+'.png)');
 
     var cumulative = data.cumulative;
     var hits=0,doubles=0,triples=0,RBI=0,HR=0,R=0,AB=0,TB=0,OPS=0;
