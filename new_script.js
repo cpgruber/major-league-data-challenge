@@ -63,7 +63,7 @@ var mlb = {
     var that = this;
     var data = this.playerData[set];
     this.makeButtons(data,that);
-
+    this.calculateCumulative(data,that);
   },
   makeButtons(data,that){
     data.forEach(function(dp){
@@ -75,6 +75,48 @@ var mlb = {
         .attr('class','playerBtn').attr('player',guy);
       btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
       btn.append('p').text(name);
+    })
+  },
+  calculateCumulative(data,that){
+    data.forEach(function(dp){
+      var cumulative = dp.cumulative;
+      var hits=0,doubles=0,triples=0,RBI=0,HR=0,R=0,AB=0,TB=0,OPS=0;
+      for (var b=0;b<cumulative.length;b++){
+        var thisData = cumulative[b];
+        //do this to preserve breaks for missed seasons; could also remove record, but would then
+        //have to loop through backwards and search for nulls
+        if (typeof thisData.hits !== 'number'){
+          thisData.hits = 'null';
+          thisData.doubles = 'null';
+          thisData.triples = 'null';
+          thisData.RBI = 'null';
+          thisData.HR = 'null';
+          thisData.runs = 'null';
+          thisData.BA = 'null';
+          thisData.slug = 'null';
+          thisData.OPS = 'null';
+          continue;
+        }
+        hits += thisData.hits;
+        doubles += thisData.doubles;
+        triples += thisData.triples;
+        RBI += thisData.RBI;
+        HR += thisData.HR;
+        R += thisData.runs;
+        AB += thisData.AB;
+        TB += thisData.TB;
+        OPS += thisData.OPS;
+        thisData.hits = hits;
+        thisData.doubles = doubles;
+        thisData.triples = triples;
+        thisData.RBI = RBI;
+        thisData.HR = HR;
+        thisData.runs = R;
+        thisData.AB = AB;
+        thisData.BA = (hits/AB);
+        thisData.slug = (TB/AB);
+        thisData.OPS = OPS/(b+1);
+      }
     })
   }
 }
