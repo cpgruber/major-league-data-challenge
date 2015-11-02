@@ -109,11 +109,12 @@ var mlb = {
     this.page[set].div.select('.yaxis').transition().duration(500).call(yAxis);
     this.page[set].div.select('.xaxis').transition().duration(500).call(xAxis);
   },
-  // getSelectedPlayer:function(set){
-  //   //
-  // },
+  getSelectedPlayer:function(set){
+    var clicked = this.page[set].div.selectAll('.clicked')[0][0];
+    console.log(clicked);
+  },
   getXdomain:function(set,time){
-    //getSelectedPlayer(set)
+    this.getSelectedPlayer(set)
     if (time == 'career'){
       var min = 1;
       var max = d3.max(this.playerData[set], function(d){return d.seasonal.length});
@@ -151,12 +152,22 @@ var mlb = {
       dp.display = name;
       var btn = that.page[set].div.select('.playerList').append('div')
         .attr('class','playerBtn').attr('player',guy)
+        //perhaps move this to bind events?
         .on('mouseover',function(){
           var player = d3.select(this).attr('player');
           that.buttonHover(player,set);
         })
+        .on('mousemove',function(){
+          var player = d3.select(this).attr('player');
+          that.buttonHover(player,set);
+        })
+        .on('click',function(){
+          that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
+          d3.select(this).attr('class','playerBtn clicked');
+          that.changeChart(set);
+        })
         .on('mouseout',function(){
-          that.chartReset(set);
+          //that.chartReset(set);
         });
       btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
       btn.append('p').text(name);
@@ -171,10 +182,7 @@ var mlb = {
     this.page[set].div.selectAll('g.player').style('opacity',1);
   },
   clickPlayer: function(player,set){
-    //var time  = this.page[set].select('input[name="optradio1"]:checked').node().value;
-    //this.timeChange(time)
-    // this.page[set].svg
-    //   .on('mouseover',toolHov).on('mousemove',toolHov).on('mouseout',toolUnhov);
+
   },
   // toolHov: function(){
   //   var player = hitDiv.select('.playerBtn.clicked').attr('player');
@@ -290,32 +298,7 @@ var mlb = {
       that.changeChart(set);
     });
 
-    // hitDiv.select('#clicker').on('change', function(){
-    //   var field = d3.select(this).node().value;
-    //   var set = hitDiv.select('input[name="optradio2"]:checked').node().value;
-    //   lineChange(field,set);
-    // });
-    //
-    // hitDiv.selectAll('input[name="optradio1"]').on('change', function () {
-    //     var time = d3.select(this).node().value;
-    //     timeChange(time);
-    // });
-    //
-    // hitDiv.selectAll('input[name="optradio2"]').on('change', function () {
-    //     var field = hitDiv.select('#clicker').node().value;
-    //     var set = d3.select(this).node().value;
-    //     lineChange(field,set);
-    // });
-    //
-    // hitDiv.selectAll('.playerBtn').on('mouseover', function(){
-    //   var player = d3.select(this).attr('player');
-    //   buttonHover(player);
-    // })
-    // .on('mousemove', function(){
-    //   var player = d3.select(this).attr('player');
-    //   buttonHover(player);
-    // })
-    // .on('mouseout', chartReset);
+
     // hitDiv.selectAll('.playerBtn').on('click',function(){
     //   var clickedClasses = d3.select(this).attr('class').split(" ");
     //   //hitDiv.selectAll('g.player').on('mousemove',null).on('mouseover',null).on('mouseout',null);
