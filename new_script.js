@@ -108,9 +108,6 @@ var mlb = {
 
     this.page[set].div.select('.yaxis').transition().duration(500).call(yAxis);
     this.page[set].div.select('.xaxis').transition().duration(500).call(xAxis);
-    // this.page[set].div.select('.yaxis').transition().duration(500).call(this.page.yAxis.scale(y));
-    // this.page[set].div.select('.xaxis').transition().duration(500).call(this.page.xAxis.scale(x));
-
   },
   // getSelectedPlayer:function(set){
   //   //
@@ -153,18 +150,25 @@ var mlb = {
       var name = guy.replace('_',' ');
       dp.display = name;
       var btn = that.page[set].div.select('.playerList').append('div')
-        .attr('class','playerBtn').attr('player',guy);
+        .attr('class','playerBtn').attr('player',guy)
+        .on('mouseover',function(){
+          var player = d3.select(this).attr('player');
+          that.buttonHover(player,set);
+        })
+        .on('mouseout',function(){
+          that.chartReset(set);
+        });
       btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
       btn.append('p').text(name);
     })
   },
   buttonHover: function(player,set){
-    // this.page[set].div.selectAll('g.player').style('opacity',0.1);
-    // this.page[set].div.selectAll('g.player.'+player).style('opacity',1);
+     this.page[set].div.selectAll('g.player').style('opacity',0.1);
+     this.page[set].div.selectAll('g.player.'+player).style('opacity',1);
   },
   chartReset: function(set){
-    // this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
-    // this.page[set].div.selectAll('g.player').style('opacity',1);
+    this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
+    this.page[set].div.selectAll('g.player').style('opacity',1);
   },
   clickPlayer: function(player,set){
     //var time  = this.page[set].select('input[name="optradio1"]:checked').node().value;
@@ -354,4 +358,3 @@ var mlb = {
   }
 }
 mlb.initViz();
-//mlb.changeChart('hitting')
