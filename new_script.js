@@ -110,17 +110,24 @@ var mlb = {
     this.page[set].div.select('.xaxis').transition().duration(500).call(xAxis);
   },
   getSelectedPlayer:function(set){
-    var clicked = this.page[set].div.selectAll('.clicked')[0][0];
-    console.log(clicked);
+    var player;
+    var clicked = this.page[set].div.select('.clicked');
+    if (clicked[0][0]){
+      player = clicked.attr('player');
+    }
+    return player;
   },
   getXdomain:function(set,time){
-    this.getSelectedPlayer(set)
+    var player = this.getSelectedPlayer(set);
     if (time == 'career'){
       var min = 1;
       var max = d3.max(this.playerData[set], function(d){return d.seasonal.length});
     }else{
       var min = d3.min(this.playerData[set], function(d) {return d.seasonal[0].year;});
       var max = d3.max(this.playerData[set], function(d) {return d.seasonal[d.seasonal.length-1].year;});
+    }
+    if (player){
+      console.log('player clicked!')
     }
     var x = this.svgAtt.xScale.domain([min,max]);
     this.svgAtt.xScale_inv.range([min,max]);
