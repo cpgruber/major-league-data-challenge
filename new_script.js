@@ -26,11 +26,11 @@ var mlb = {
   },
   getPageComponents:function(set){
     this.page[set].div = d3.select('#'+set);
-    this.page[set].svg = this.page[set].div.append('svg')
+    this.page[set].svg = this.page[set].div.select('.svgContain').append('svg')
       .attr('height',this.svgAtt.height).attr('width',this.svgAtt.width);
-    this.page[set].field = this.page[set].div.select('#clicker').node().value;
-    this.page[set].time = this.page[set].div.select('input.time:checked').node().value;
-    this.page[set].stats = this.page[set].div.select('input.stats:checked').node().value;
+    this.page[set].field = this.page[set].div.select('#clicker');
+    this.page[set].time = this.page[set].div.select('input.time:checked');
+    this.page[set].stats = this.page[set].div.select('input.stats:checked');
 
     this.buildScales();
   },
@@ -76,36 +76,65 @@ var mlb = {
     return data;
   },
   makeChart:function(data,set){
-    var players = this.page[set].svg.selectAll('.player').data(data).enter().append('g')
+    this.page[set].players = this.page[set].svg.selectAll('.player').data(data).enter().append('g')
       .attr('class', function(d){return 'player '+d.player});
-    var lines = players.append('path')
+    this.page[set].lines = this.page[set].players.append('path')
       .style('fill','none').style('stroke-width',3).style('stroke-opacity',0.5).style('stroke','green');
   },
   changeChart:function(){
-    //get player if player
-    //get X domain
-    //get Y domain
-    //get dropdown field
-    //get time or career
-    //get seasonal or cumulative
-  },
-  getSelectedPlayer:function(){
+    var set = 'hitters';
+
+    var field = this.getField(set);
+    var stats = this.getStats(set);
+    var time = this.getTime(set);
+
+    var y = this.getYdomain(set,stats,field);
+    var x = this.getXdomain(set,time);
+    //var lineFx = this.getLineFx();
+    var lineFx = this.svgAtt.lineFx
+      .defined(function(d) { return d[field] >= 0; })
+      .y(function(d) {return y(d[field])})
+      .x(function(d) {return x(d.year)})
+
+    this.page[set].svg.selectAll('.player').select('path')
+      .transition().duration(500).attr('d', function(d){return lineFx(d[stats])});
+    // this.page[set].div.select('.yaxis').transition().duration(500).call(this.page.yAxis.scale(y));
+    // this.page[set].div.select('.xaxis').transition().duration(500).call(this.page.xAxis.scale(x));
 
   },
-  getXdomain:function(){
-
+  getSelectedPlayer:function(set){
+    //
   },
-  getYdomain:function(){
-
+  getXdomain:function(set,time){
+    //getSelectedPlayer(set)
+    if (time == 'career'){
+      var min = 1;
+      var max = d3.max(this.playerData[set], function(d){return d.seasonal.length});
+    }else{
+      var min = d3.min(this.playerData[set], function(d) {return d.seasonal[0].year;});
+      var max = d3.max(this.playerData[set], function(d) {return d.seasonal[d.seasonal.length-1].year;});
+    }
+    var x = this.svgAtt.xScale.domain([min,max]);
+    this.svgAtt.xScale_inv.range([min,max]);
+    return x;
   },
-  getField:function(){
-
+  getYdomain:function(set,stats,field){
+    var fieldMax = d3.max(this.playerData[set], function(d) {
+      return d3.max(d[stats], function(e){
+        return e[field];
+      });
+    });
+    var y = this.svgAtt.yScale.domain([0,fieldMax]);
+    return y;
   },
-  getStats:function(){
-
+  getField:function(set){
+    return this.page[set].div.select('#clicker').node().value;
   },
-  getTime:function(){
-
+  getStats:function(set){
+    return this.page[set].div.select('input.stats:checked').node().value;
+  },
+  getTime:function(set){
+    return this.page[set].div.select('input.time:checked').node().value;
   },
   lineChange: function(field,data,stats,set){
     // var that = this;
@@ -172,12 +201,12 @@ var mlb = {
     })
   },
   buttonHover: function(player,set){
-    this.page[set].div.selectAll('g.player').style('opacity',0.1);
-    this.page[set].div.selectAll('g.player.'+player).style('opacity',1);
+    // this.page[set].div.selectAll('g.player').style('opacity',0.1);
+    // this.page[set].div.selectAll('g.player.'+player).style('opacity',1);
   },
   chartReset: function(set){
-    this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
-    this.page[set].div.selectAll('g.player').style('opacity',1);
+    // this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
+    // this.page[set].div.selectAll('g.player').style('opacity',1);
   },
   clickPlayer: function(player,set){
     //var time  = this.page[set].select('input[name="optradio1"]:checked').node().value;
