@@ -32,6 +32,11 @@ var mlb = {
     this.page[set].timeInput = this.page[set].div.selectAll('input.time');
     this.page[set].statsInput = this.page[set].div.selectAll('input.stats');
 
+    this.page[set].xAxis = this.page[set].svg.append('svg:g').attr('class','xaxis')
+      .attr('transform','translate(0,'+(this.svgAtt.height-this.svgAtt.margins.bottom)+')');
+    this.page[set].yAxis = this.page[set].svg.append('svg:g').attr('class','yaxis')
+      .attr('transform','translate('+(this.svgAtt.margins.left)+',0)');
+
     this.buildScales();
   },
   playerData:{
@@ -80,6 +85,7 @@ var mlb = {
       .attr('class', function(d){return 'player '+d.player});
     this.page[set].lines = this.page[set].players.append('path')
       .style('fill','none').style('stroke-width',3).style('stroke-opacity',0.5).style('stroke','green');
+    this.changeChart(set);
   },
   changeChart:function(set){
     var field = this.getField(set);
@@ -89,6 +95,9 @@ var mlb = {
     var y = this.getYdomain(set,stats,field);
     var x = this.getXdomain(set,time);
 
+    var yAxis = this.page.yAxis.scale(y);
+    var xAxis = this.page.xAxis.scale(x);
+
     var lineFx = this.svgAtt.lineFx
       .defined(function(d) { return d[field] >= 0; })
       .y(function(d) {return y(d[field])})
@@ -96,6 +105,9 @@ var mlb = {
 
     this.page[set].svg.selectAll('.player').select('path')
       .transition().duration(500).attr('d', function(d){return lineFx(d[stats])});
+
+    this.page[set].div.select('.yaxis').transition().duration(500).call(yAxis);
+    this.page[set].div.select('.xaxis').transition().duration(500).call(xAxis);
     // this.page[set].div.select('.yaxis').transition().duration(500).call(this.page.yAxis.scale(y));
     // this.page[set].div.select('.xaxis').transition().duration(500).call(this.page.xAxis.scale(x));
 
@@ -134,58 +146,6 @@ var mlb = {
   getTime:function(set){
     return this.page[set].div.select('input.time:checked').node().value;
   },
-  // lineChange: function(field,data,stats,set){
-    // var that = this;
-    // var fieldMax = d3.max(data, function(d) {
-    //   return d3.max(d[stats], function(e){
-    //     return e[field];
-    //   });
-    // });
-    // var y = this.svgAtt.yScale.domain([0,fieldMax]);
-    // var lineFx = this.svgAtt.lineFx.defined(function(d) { return d[field] >= 0; }).y(function (d) {return y(d[field]) });
-    // this.page[set].svg.selectAll('.player').select('path')
-    //   .transition().duration(500).attr('d', function(d){console.log(d);return lineFx(d[stats])});
-    // this.page[set].div.select('.yaxis').transition().duration(500).call(that.page.yAxis.scale(y));
-  // },
-  // timeChange:function(time){
-    //check if playerbutton is clicked, could refactor into own function returning player if clicked//
-    // var clicked = hitDiv.select('.playerBtn.clicked');
-    // if (clicked[0][0] == null){
-    //   if (time == 'career'){
-    //     var min = 1;
-    //     var max = d3.max(hitData, function(d){return d.seasonal.length});
-    //     lineFx.x(function(d,i){return x(i+1)});
-    //   }else{
-    //     var min = d3.min(hitData, function(d) {return d.seasonal[0].year;});
-    //     var max = d3.max(hitData, function(d) {return d.seasonal[d.seasonal.length-1].year;});
-    //     lineFx.x(function (d) { return x(d.year) })
-    //   }
-    // }else{
-    //   //if player button is clicked, make x axis fit just that player, should do the same with y axis//
-    //   var player = clicked.attr('player');
-    //   var min,max;
-    //   hitDiv.select('g.player.'+player).each(function(d){
-    //     if (time == 'career'){
-    //       min = 1;
-    //       max = d.seasonal.length;
-    //       lineFx.x(function(d,i){return x(i+1)});
-    //     }else{
-    //       min = d.seasonal[0].year;
-    //       max = d.seasonal[d.seasonal.length-1].year;
-    //       lineFx.x(function (d) { return x(d.year) })
-    //     }
-    //   })
-    // }
-    // x.domain([min,max]);
-    // xInv.range([min,max]);
-    //
-    // var field = hitDiv.select('#clicker').node().value;
-    // hitDiv.select('.xaxis').transition().duration(500).call(xAxis.scale(x));
-    //
-    // var set = hitDiv.select('input[name="optradio2"]:checked').node().value;
-    //
-    // this.lineChange(field,set);
-  // },
   makeButtons(data,that,set){
     data.forEach(function(dp){
       var guy = dp.seasonal[0].player;
@@ -325,6 +285,7 @@ var mlb = {
     this.page[set].statsInput.on('change',function(){
       that.changeChart(set);
     });
+
     // hitDiv.select('#clicker').on('change', function(){
     //   var field = d3.select(this).node().value;
     //   var set = hitDiv.select('input[name="optradio2"]:checked').node().value;
@@ -393,3 +354,4 @@ var mlb = {
   }
 }
 mlb.initViz();
+//mlb.changeChart('hitting')
