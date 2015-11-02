@@ -6,7 +6,7 @@
      <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>MLB Data Viz challenge</title>
-    <!-- <link href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css' rel='stylesheet' type='text/css'/> -->
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
 
@@ -16,7 +16,7 @@
 
   <body>
   <h1>Major League Data Challenge</h1>
-  <div id='hitting' class='container'>
+  <div id='hitters' class='container'>
     <h2>Best Bats</h2>
     <div class='controls'>
     	<select id='clicker'>
@@ -29,17 +29,17 @@
         <option value='OPS'>OPS</option>
     	</select>
 
-      <label><input type="radio" value="time" name="optradio1" checked>Over Time</label>
-      <label><input type="radio" value="career" name="optradio1">Over Career</label>
+      <label><input class='time' type="radio" value="time" name="optradio1" checked>Over Time</label>
+      <label><input class='time' type="radio" value="career" name="optradio1">Over Career</label>
 
-      <label><input type="radio" value="seasonal" name="optradio2" checked>Single-Season</label>
-      <label><input type="radio" value="cumulative" name="optradio2">Cumulatively</label>
+      <label><input class='stats' type="radio" value="seasonal" name="optradio2" checked>Single-Season</label>
+      <label><input class='stats' type="radio" value="cumulative" name="optradio2">Cumulatively</label>
     </div>
     <div class='playerList hitters'></div>
-    <div class='svgContain eight columns'></div>
+    <div class='svgContain'></div>
   </div>
 
-  <div id='pitching' class='container'>
+  <div id='pitchers' class='container'>
     <h2>Best Arms</h2>
     <div class='controls'>
       <select id='clicker'>
@@ -51,17 +51,16 @@
         <option value='WHIP'>WHIP</option>
       </select>
 
-      <label><input type="radio" value="time" name="optradio3" checked>Over Time</label>
-      <label><input type="radio" value="career" name="optradio3">Over Career</label>
+      <label><input class='time' type="radio" value="time" name="optradio3" checked>Over Time</label>
+      <label><input class='time' type="radio" value="career" name="optradio3">Over Career</label>
 
-      <label><input type="radio" value="seasonal" name="optradio4" checked>Single-Season</label>
-      <label><input type="radio" value="cumulative" name="optradio4">Cumulatively</label>
+      <label><input class='stats' type="radio" value="seasonal" name="optradio4" checked>Single-Season</label>
+      <label><input class='stats' type="radio" value="cumulative" name="optradio4">Cumulatively</label>
     </div>
     <div class='playerList pitchers'></div>
-    <div class='svgContain eight columns'></div>
+    <div class='svgContain'></div>
   </div>
 
-  <!-- <script type='text/javascript' src='script.js'></script> -->
   <script type='text/javascript' src='new_script.js'></script>
   <!--<script>
 //photo-credits

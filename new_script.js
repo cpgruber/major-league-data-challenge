@@ -1,6 +1,6 @@
 var mlb = {
   svgAtt:{
-    width:parseFloat(d3.select('.eight.columns').style('width')),
+    width:parseFloat(d3.select('.svgContain').style('width')),
     height:500,
     margins:{
       left:50,
@@ -16,26 +16,21 @@ var mlb = {
       .domain([this.svgAtt.margins.left,this.svgAtt.width-this.svgAtt.margins.right]);
     this.svgAtt.yScale = d3.scale.linear()
       .range([(this.svgAtt.height-this.svgAtt.margins.bottom),this.svgAtt.margins.top]);
-    // this.svgAtt.lineFx = d3.svg.line().interpolate('linear');
-    // this.page.xAxis = d3.svg.axis().orient('bottom').tickFormat(d3.format('d'));
-    // this.page.yAxis = d3.svg.axis().orient('left');
+    this.svgAtt.lineFx = d3.svg.line().interpolate('linear');
+    this.page.xAxis = d3.svg.axis().orient('bottom').tickFormat(d3.format('d'));
+    this.page.yAxis = d3.svg.axis().orient('left');
   },
   page:{
     hitters:{},
     pitchers:{}
   },
-  getPageComponents:function(){
-    this.page.hitters.div = d3.select('#hitting');
-    this.page.pitchers.div = d3.select('#pitching');
-    this.page.hitters.svg = this.page.hitters.div.append('svg')
+  getPageComponents:function(set){
+    this.page[set].div = d3.select('#'+set);
+    this.page[set].svg = this.page[set].div.append('svg')
       .attr('height',this.svgAtt.height).attr('width',this.svgAtt.width);
-    this.page.pitchers.svg = this.page.pitchers.div.append('svg')
-      .attr('height',this.svgAtt.height).attr('width',this.svgAtt.width);
-
-    this.page.hitters.tip = this.page.hitters.svg.append('g').style('visibility','hidden');
-    this.page.hitters.tip.append('line').attr('x1',0).attr('x2',0).style('stroke-width',1).style('stroke','black');
-    this.page.hitters.tip.append('circle').attr('r',15).attr('fill','white');
-    this.page.hitters.tip.append('text').attr('text-anchor','middle').attr('dy',7.5);
+    this.page[set].field = this.page[set].div.select('#clicker').node().value;
+    this.page[set].time = this.page[set].div.select('input.time:checked').node().value;
+    this.page[set].stats = this.page[set].div.select('input.stats:checked').node().value;
 
     this.buildScales();
   },
@@ -80,22 +75,50 @@ var mlb = {
     this.calculateCumulative(data,that);
     return data;
   },
-  makeChart(data,set){
+  makeChart:function(data,set){
     var players = this.page[set].svg.selectAll('.player').data(data).enter().append('g')
       .attr('class', function(d){return 'player '+d.player});
     var lines = players.append('path')
       .style('fill','none').style('stroke-width',3).style('stroke-opacity',0.5).style('stroke','green');
   },
-  lineChange: function(field,set){
-    // var fieldMax = d3.max(hitData, function(d) {
-    //   return d3.max(d[set], function(e){
+  changeChart:function(){
+    //get player if player
+    //get X domain
+    //get Y domain
+    //get dropdown field
+    //get time or career
+    //get seasonal or cumulative
+  },
+  getSelectedPlayer:function(){
+
+  },
+  getXdomain:function(){
+
+  },
+  getYdomain:function(){
+
+  },
+  getField:function(){
+
+  },
+  getStats:function(){
+
+  },
+  getTime:function(){
+
+  },
+  lineChange: function(field,data,stats,set){
+    // var that = this;
+    // var fieldMax = d3.max(data, function(d) {
+    //   return d3.max(d[stats], function(e){
     //     return e[field];
     //   });
     // });
-    // y.domain([0,fieldMax]);
-    // lineFx.defined(function(d) { return d[field] >= 0; }).y(function (d) { return y(d[field]) });
-    // lines.transition().duration(500).attr('d', function(d){return lineFx(d[set])});
-    // hitDiv.select('.yaxis').transition().duration(500).call(yAxis.scale(y));
+    // var y = this.svgAtt.yScale.domain([0,fieldMax]);
+    // var lineFx = this.svgAtt.lineFx.defined(function(d) { return d[field] >= 0; }).y(function (d) {return y(d[field]) });
+    // this.page[set].svg.selectAll('.player').select('path')
+    //   .transition().duration(500).attr('d', function(d){console.log(d);return lineFx(d[stats])});
+    // this.page[set].div.select('.yaxis').transition().duration(500).call(that.page.yAxis.scale(y));
   },
   timeChange:function(time){
     //check if playerbutton is clicked, could refactor into own function returning player if clicked//
@@ -134,7 +157,7 @@ var mlb = {
     //
     // var set = hitDiv.select('input[name="optradio2"]:checked').node().value;
     //
-    // lineChange(field,set);
+    // this.lineChange(field,set);
   },
   makeButtons(data,that,set){
     data.forEach(function(dp){
@@ -148,19 +171,19 @@ var mlb = {
       btn.append('p').text(name);
     })
   },
-  buttonHover: function(player){
-    hitDiv.selectAll('g.player').style('opacity',0.1);
-    hitDiv.selectAll('g.player.'+player).style('opacity',1);
+  buttonHover: function(player,set){
+    this.page[set].div.selectAll('g.player').style('opacity',0.1);
+    this.page[set].div.selectAll('g.player.'+player).style('opacity',1);
   },
-  chartReset: function(){
-    hitDiv.selectAll('.playerBtn').attr('class','playerBtn');
-    hitDiv.selectAll('g.player').style('opacity',1);
+  chartReset: function(set){
+    this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
+    this.page[set].div.selectAll('g.player').style('opacity',1);
   },
-  clickPlayer: function(player){
-    var time  = hitDiv.select('input[name="optradio1"]:checked').node().value;
-    timeChange(time)
-    hitSvg
-      .on('mouseover',toolHov).on('mousemove',toolHov).on('mouseout',toolUnhov);
+  clickPlayer: function(player,set){
+    //var time  = this.page[set].select('input[name="optradio1"]:checked').node().value;
+    //this.timeChange(time)
+    // this.page[set].svg
+    //   .on('mouseover',toolHov).on('mousemove',toolHov).on('mouseout',toolUnhov);
   },
   // toolHov: function(){
   //   var player = hitDiv.select('.playerBtn.clicked').attr('player');
@@ -319,8 +342,13 @@ var mlb = {
     //     clickPlayer(player);
     //   }
     // });
+  },
+  initViz:function(){
+    this.getPageComponents('hitters');
+    this.getData('hitters');
+
+    this.getPageComponents('pitchers');
+    this.getData('pitchers');
   }
 }
-//mlb.getPageComponents();
-// mlb.getData('hitters');
-// mlb.getData('pitchers');
+mlb.initViz();
