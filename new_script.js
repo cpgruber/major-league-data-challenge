@@ -241,10 +241,9 @@ var mlb = {
     var year = d3.round(this.svgAtt.xScale_inv(left),0);
     var top = d3.event.offsetY;
 
-    // var xLeft = this.svgAtt.xScale((time=='career')?year:year);
     xLeft = this.svgAtt.xScale(year);
     var yData = (time == 'time')?data[stats].filter(function(b){return b.year == year})[0]:
-    data[stats][year-1];
+      data[stats][year-1];
 
     if (yData){
       var yTop = this.svgAtt.yScale(yData[field]);
@@ -258,7 +257,7 @@ var mlb = {
         this.page[set].tooltip.select('circle').attr('transform','translate(0,'+cTop+')');
       }
       var dataDisp = d3.round(yData[field],3);
-      if (dataDisp){
+      if (dataDisp >= 0){
         this.page[set].tooltip.select('text').text(dataDisp);
       }
     }else{
@@ -271,7 +270,7 @@ var mlb = {
   calculateCumulative(data,that,set){
     data.forEach(function(dp){
       var cumulative = dp.cumulative;
-      if (set == 'hitting'){
+      if (set == 'hitters'){
         var hits=0,doubles=0,triples=0,RBI=0,HR=0,R=0,AB=0,TB=0,OPS=0;
         for (var b=0;b<cumulative.length;b++){
           var thisData = cumulative[b];
