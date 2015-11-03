@@ -113,3 +113,9 @@ select:focus {
   border: 1px solid #33C3F0;
   outline: 0;
 }
+.tooltip text{
+  text-anchor:middle;
+}
+.tooltip circle{
+  fill:white;
+}

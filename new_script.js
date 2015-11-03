@@ -36,7 +36,7 @@ var mlb = {
       .attr('class','tooltip').style('visibility','hidden');
     this.page[set].tooltip.append('line').attr('x1',0).attr('x2',0)
       .style('stroke','black').style('stroke-width',1);
-    // this.page[set].tooltip.append('circle').attr('r',15).style('fill','white');
+    this.page[set].tooltip.append('circle').attr('r',15);
     this.page[set].tooltip.append('text').attr('dy',7.5);
 
     this.page[set].xAxis = this.page[set].svg.append('svg:g').attr('class','xaxis')
@@ -232,7 +232,6 @@ var mlb = {
     this.page[set].div.selectAll('g.player').style('opacity',1);
   },
   toolHov: function(player,set){
-
     var field = this.getField(set);
     var time = this.getTime(set);
     var stats = this.getStats(set);
@@ -255,6 +254,7 @@ var mlb = {
           .attr('transform','translate('+xLeft+','+yTop+')');
         this.page[set].tooltip.selectAll('*').attr('transform','translate(0,'+cTop+')');
         this.page[set].tooltip.select('line').attr('y1',0).attr('y2',cTop*(-1))
+        this.page[set].tooltip.select('circle').attr('transform','translate(0,'+cTop+')');
       }
     }else{
       this.page[set].tooltip.style('visibility','hidden')
