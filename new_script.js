@@ -84,7 +84,7 @@ var mlb = {
     var that = this;
     var data = this.playerData[set];
     this.makeButtons(data,that,set);
-    this.calculateCumulative(data,that);
+    this.calculateCumulative(data,that,set);
     return data;
   },
   makeChart:function(data,set){
@@ -257,15 +257,16 @@ var mlb = {
         this.page[set].tooltip.select('line').attr('y1',0).attr('y2',cTop*(-1))
         this.page[set].tooltip.select('circle').attr('transform','translate(0,'+cTop+')');
       }
+      this.page[set].tooltip.select('text').text(d3.round(yData[field],3));
     }else{
       this.page[set].tooltip.style('visibility','hidden')
     }
-    this.page[set].tooltip.select('text').text(d3.round(yData[field],3));
   },
   toolUnhov: function(set){
     this.page[set].tooltip.style('visibility','hidden');
   },
   calculateCumulative(data,that,set){
+    console.log(data);
     data.forEach(function(dp){
       var cumulative = dp.cumulative;
       if (set == 'hitting'){
@@ -346,11 +347,10 @@ var mlb = {
   initViz:function(){
     this.getPageComponents('hitters');
     this.getData('hitters');
+    this.bindEvents('hitters');
 
     this.getPageComponents('pitchers');
     this.getData('pitchers');
-
-    this.bindEvents('hitters');
     this.bindEvents('pitchers');
   }
 }
