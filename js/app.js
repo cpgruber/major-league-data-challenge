@@ -28,9 +28,10 @@ var mlb = {
     this.page[set].div = d3.select('#'+set);
     this.page[set].svg = this.page[set].div.select('.svgContain').append('svg')
       .attr('height',this.svgAtt.height).attr('width',this.svgAtt.width);
-    this.page[set].fieldInput = this.page[set].div.select('#clicker');
+    this.page[set].fieldInput = this.page[set].div.select('.clicker');
     this.page[set].timeInput = this.page[set].div.selectAll('input.time');
     this.page[set].statsInput = this.page[set].div.selectAll('input.stats');
+    this.page[set].displayName = this.page[set].div.select('.dispName');
 
     this.page[set].tooltip = this.page[set].svg.append('g')
       .attr('class','tooltip').style('visibility','hidden');
@@ -158,7 +159,7 @@ var mlb = {
     return y;
   },
   getField:function(set){
-    return this.page[set].div.select('#clicker').node().value;
+    return this.page[set].div.select('.clicker').node().value;
   },
   getStats:function(set){
     return this.page[set].div.select('input.stats:checked').node().value;
@@ -224,6 +225,7 @@ var mlb = {
   buttonHover: function(player,set){
      this.page[set].div.selectAll('g.player').style('opacity',0.1);
      this.page[set].div.selectAll('g.player.'+player).style('opacity',1);
+     this.page[set].displayName.text(player.replace("_"," "));
   },
   chartReset: function(set){
     this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');

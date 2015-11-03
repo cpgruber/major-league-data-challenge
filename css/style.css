@@ -52,9 +52,10 @@ h2{
   float:left;
 }
 .svgContain{
+  position:relative;
   float:left;
   width:700px;
-  background-image:url(http://pizzabytheslice.com/img/posts/steampunk-gears/photoshop-sand-pattern.jpg);
+  /*background-image:url(http://pizzabytheslice.com/img/posts/steampunk-gears/photoshop-sand-pattern.jpg);*/
 }
 .clicked{
   background-color:rgba(255,255,0,0.1);
@@ -68,11 +69,11 @@ select,label{
 }
 .xaxis path, .xaxis line,.yaxis path, .yaxis line {
   fill: none;
-  stroke: white;
+  stroke: black;
   shape-rendering: crispEdges;
 }
 .xaxis text, .yaxis text{
-  fill:white;
+  fill:black;
 }
 [type="radio"]{
   display:none;
@@ -92,7 +93,7 @@ label:after{
   background:gray;
   border-radius:50%;
 }
-[type="radio"]:checked label::before{
+[type="radio"]:checked + label:before{
   content:'';
   display:block;
   position:absolute;
@@ -100,7 +101,7 @@ label:after{
   top:9px;
   width:8px;
   height:8px;
-  background: #fff;
+  background:red;
   z-index:2;
   border-radius:100%;
 }
@@ -127,5 +128,12 @@ g.player path{
   fill:none;
   stroke-width:3;
   stroke-opacity:0.5;
-  stroke:white;
+  stroke:blue;
+}
+.dispName{
+  position:absolute;
+  text-align: center;
+  width:100%;
+  font-family: 'Oswald','arial',sans-serif;
+  font-size:42px;
 }
