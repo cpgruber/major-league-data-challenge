@@ -130,7 +130,7 @@ var mlb = {
     if (player){
       this.page[set].svg.select('g.player.'+player).each(function(d){
         if (time == 'career'){
-          min = 1;
+          min = 0;
           max = d.seasonal.length;
         }else{
           min = d.seasonal[0].year;
@@ -139,7 +139,7 @@ var mlb = {
       })
     }else{
       if (time == 'career'){
-        min = 1;
+        min = 0;
         max = d3.max(this.playerData[set], function(d){return d.seasonal.length});
       }else{
         min = d3.min(this.playerData[set], function(d) {return d.seasonal[0].year;});
@@ -241,7 +241,8 @@ var mlb = {
     var year = d3.round(this.svgAtt.xScale_inv(left),0);
     var top = d3.event.offsetY;
 
-    var xLeft = this.svgAtt.xScale(year);
+    // if (time == 'career'){year = year - 1}
+    var xLeft = this.svgAtt.xScale((time=='career')?year-1:year);
     var yData = (time == 'time')?data[stats].filter(function(b){return b.year == year})[0]:
     data[stats][year-1];
 
