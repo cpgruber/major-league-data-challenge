@@ -56,16 +56,15 @@ var mlb = {
     for (var i=0;i<10;i++){
       d3.csv(set+'/player'+i+'.csv')
         .row(function(d) {
+          // console.log(d.Tm,d.Year);
           var da;
           if (set == 'hitters'){
             da = {
-              player:d.Player,year:+d.Year,hits:+d.H,doubles:+d['2B'],triples:+d['3B'],RBI:+d.RBI,HR:+d.HR,runs:+d.R,
-              TB:+d.TB,AB:+d.AB,slug:+d.SLG,BA:+d.BA,BB:+d.BB,IBB:+d.IBB,SB:+d.SB,CS:+d.CS,K:+d.SO,G:+d.G,OPS:+d.OPS
+              player:d.Player,team:d.Tm,year:+d.Year,hits:+d.H,doubles:+d['2B'],triples:+d['3B'],RBI:+d.RBI,HR:+d.HR,runs:+d.R,TB:+d.TB,AB:+d.AB,slug:+d.SLG,BA:+d.BA,BB:+d.BB,IBB:+d.IBB,SB:+d.SB,CS:+d.CS,K:+d.SO,G:+d.G,OPS:+d.OPS
             }
           }else{
             da = {
-              player:d.Player,year:+d.Year,wins:+d.W,losses:+d.L,ERA:+d.ERA,hits:+d.H,IP:+d.IP,ER:+d.ER,HR:+d.HR,K:+d.SO,
-              WHIP:+d.WHIP,H9:+d.H9,BB:+d.BB,IBB:+d.IBB,HR9:+d.HR9,BB9:+d.BB9,K9:+d.SO9,KpW:+d['SO/W']
+              player:d.Player,team:d.Tm,year:+d.Year,wins:+d.W,losses:+d.L,ERA:+d.ERA,hits:+d.H,IP:+d.IP,ER:+d.ER,HR:+d.HR,K:+d.SO,WHIP:+d.WHIP,H9:+d.H9,BB:+d.BB,IBB:+d.IBB,HR9:+d.HR9,BB9:+d.BB9,K9:+d.SO9,KpW:+d['SO/W']
             }
           }
           return da;
@@ -91,7 +90,6 @@ var mlb = {
     this.page[set].players = this.page[set].svg.selectAll('.player').data(data).enter().append('g')
       .attr('class', function(d){return 'player '+d.player});
     this.page[set].lines = this.page[set].players.append('path')
-      .style('fill','none').style('stroke-width',3).style('stroke-opacity',0.5).style('stroke','green');
     this.changeChart(set);
   },
   changeChart:function(set){
@@ -244,7 +242,6 @@ var mlb = {
     xLeft = this.svgAtt.xScale(year);
     var yData = (time == 'time')?data[stats].filter(function(b){return b.year == year})[0]:
       data[stats][year-1];
-
     if (yData){
       var yTop = this.svgAtt.yScale(yData[field]);
       var mid = this.svgAtt.yScale.domain()[1]/2;

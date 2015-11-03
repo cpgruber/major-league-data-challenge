@@ -54,6 +54,7 @@ h2{
 .svgContain{
   float:left;
   width:700px;
+  background-image:url(http://pizzabytheslice.com/img/posts/steampunk-gears/photoshop-sand-pattern.jpg);
 }
 .clicked{
   background-color:rgba(255,255,0,0.1);
@@ -67,8 +68,11 @@ select,label{
 }
 .xaxis path, .xaxis line,.yaxis path, .yaxis line {
   fill: none;
-  stroke: #000;
+  stroke: white;
   shape-rendering: crispEdges;
+}
+.xaxis text, .yaxis text{
+  fill:white;
 }
 [type="radio"]{
   display:none;
@@ -118,4 +122,10 @@ select:focus {
 }
 .tooltip circle{
   fill:white;
+}
+g.player path{
+  fill:none;
+  stroke-width:3;
+  stroke-opacity:0.5;
+  stroke:white;
 }
