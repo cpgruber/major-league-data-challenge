@@ -119,17 +119,16 @@ var mlb = {
   },
   getXdomain:function(set,time){
     var player = this.getSelectedPlayer(set);
-
     var min,max;
     if (player){
       this.page[set].svg.select('g.player.'+player).each(function(d){
-          if (time == 'career'){
-            min = 1;
-            max = d.seasonal.length;
-          }else{
-            min = d.seasonal[0].year;
-            max = d.seasonal[d.seasonal.length-1].year;
-          }
+        if (time == 'career'){
+          min = 1;
+          max = d.seasonal.length;
+        }else{
+          min = d.seasonal[0].year;
+          max = d.seasonal[d.seasonal.length-1].year;
+        }
       })
     }else{
       if (time == 'career'){
@@ -180,12 +179,21 @@ var mlb = {
           that.buttonHover(player,set);
         })
         .on('click',function(){
+          var clicked = d3.select(this).attr('class').split(" ")[1];
+          if (clicked){
+            d3.select(this).attr('class','playerBtn');
+            that.changeChart(set);
+            return;
+          }
+          //that.page[set].clicked = classes[0];
           that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
           d3.select(this).attr('class','playerBtn clicked');
+          that.page[set].div.selectAll('.playerBtn')
+            .on('mouseover',null).on('mousemove',null).on('mouseout',null);
           that.changeChart(set);
         })
         .on('mouseout',function(){
-          //that.chartReset(set);
+          that.chartReset(set);
         });
       btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
       btn.append('p').text(name);
@@ -199,9 +207,9 @@ var mlb = {
     this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
     this.page[set].div.selectAll('g.player').style('opacity',1);
   },
-  clickPlayer: function(player,set){
-
-  },
+  // clickPlayer: function(player,set){
+  //
+  // },
   // toolHov: function(){
   //   var player = hitDiv.select('.playerBtn.clicked').attr('player');
   //   var data = hitData.filter(function(b){return b.player == player})[0];
@@ -315,34 +323,34 @@ var mlb = {
     this.page[set].statsInput.on('change',function(){
       that.changeChart(set);
     });
-
-
-    // hitDiv.selectAll('.playerBtn').on('click',function(){
+    // var thisDiv = this.page[set].div;
+    // var thisSvg = this.page[set].svg;
+    // thisDiv.selectAll('.playerBtn').on('click',function(){
     //   var clickedClasses = d3.select(this).attr('class').split(" ");
     //   //hitDiv.selectAll('g.player').on('mousemove',null).on('mouseover',null).on('mouseout',null);
-    //   hitSvg.on('mousemove',null).on('mouseover',null).on('mouseout',null);
+    //   thisSvg.on('mousemove',null).on('mouseover',null).on('mouseout',null);
     //   if (clickedClasses.indexOf('clicked') !== -1){
-    //     hitDiv.selectAll('.playerBtn').attr('class','playerBtn')
+    //     thisDiv.selectAll('.playerBtn').attr('class','playerBtn')
     //       .on('mouseover', function(){
     //         var player = d3.select(this).attr('player');
-    //         buttonHover(player);
+    //         that.buttonHover(player);
     //       })
     //       .on('mousemove', function(){
     //         var player = d3.select(this).attr('player');
-    //         buttonHover(player);
+    //         that.buttonHover(player);
     //       })
-    //       .on('mouseout', chartReset);
-    //       hitTip.style('visibility','hidden');
-    //       var time  = hitDiv.select('input[name="optradio1"]:checked').node().value;
-    //       timeChange(time);
+    //       .on('mouseout', that.chartReset);
+    //       // hitTip.style('visibility','hidden');
+    //       // var time  = hitDiv.select('input[name="optradio1"]:checked').node().value;
+    //       // timeChange(time);
     //   }else{
-    //     hitDiv.selectAll('.playerBtn').attr('class','playerBtn');
+    //     thisDiv.selectAll('.playerBtn').attr('class','playerBtn');
     //     d3.select(this).attr('class','playerBtn clicked');
-    //     hitDiv.selectAll('.playerBtn').on('mousemove',null).on('mouseover',null).on('mouseout',null);
+    //     thisDiv.selectAll('.playerBtn').on('mousemove',null).on('mouseover',null).on('mouseout',null);
     //     var player = d3.select(this).attr('player');
-    //     hitTip.style('visibility','hidden');
-    //     buttonHover(player);
-    //     clickPlayer(player);
+    //     // hitTip.style('visibility','hidden');
+    //     // buttonHover(player);
+    //     // clickPlayer(player);
     //   }
     // });
   },
