@@ -241,7 +241,6 @@ var mlb = {
     var year = d3.round(this.svgAtt.xScale_inv(left),0);
     var top = d3.event.offsetY;
 
-    // if (time == 'career'){year = year - 1}
     var xLeft = this.svgAtt.xScale((time=='career')?year-1:year);
     var yData = (time == 'time')?data[stats].filter(function(b){return b.year == year})[0]:
     data[stats][year-1];
@@ -257,7 +256,10 @@ var mlb = {
         this.page[set].tooltip.select('line').attr('y1',0).attr('y2',cTop*(-1))
         this.page[set].tooltip.select('circle').attr('transform','translate(0,'+cTop+')');
       }
-      this.page[set].tooltip.select('text').text(d3.round(yData[field],3));
+      var dataDisp = d3.round(yData[field],3);
+      if (dataDisp){
+        this.page[set].tooltip.select('text').text(dataDisp);
+      }
     }else{
       this.page[set].tooltip.style('visibility','hidden')
     }
