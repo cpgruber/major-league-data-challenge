@@ -161,6 +161,21 @@ var mlb = {
   getTime:function(set){
     return this.page[set].div.select('input.time:checked').node().value;
   },
+  bindPlayerButtonsMouse:function(set){
+    var that = this;
+    this.page[set].div.selectAll('.playerBtn')
+      .on('mouseover',function(){
+        var player = d3.select(this).attr('player');
+        that.buttonHover(player,set);
+      })
+      .on('mousemove',function(){
+        var player = d3.select(this).attr('player');
+        that.buttonHover(player,set);
+      })
+      .on('mouseout',function(){
+        that.chartReset(set);
+      });
+  },
   makeButtons(data,that,set){
     data.forEach(function(dp){
       var guy = dp.seasonal[0].player;
@@ -169,35 +184,25 @@ var mlb = {
       dp.display = name;
       var btn = that.page[set].div.select('.playerList').append('div')
         .attr('class','playerBtn').attr('player',guy)
-        //perhaps move this to bind events?
-        .on('mouseover',function(){
-          var player = d3.select(this).attr('player');
-          that.buttonHover(player,set);
-        })
-        .on('mousemove',function(){
-          var player = d3.select(this).attr('player');
-          that.buttonHover(player,set);
-        })
         .on('click',function(){
           var clicked = d3.select(this).attr('class').split(" ")[1];
           if (clicked){
             d3.select(this).attr('class','playerBtn');
             that.changeChart(set);
+            that.bindPlayerButtonsMouse(set);
             return;
           }
-          //that.page[set].clicked = classes[0];
           that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
           d3.select(this).attr('class','playerBtn clicked');
           that.page[set].div.selectAll('.playerBtn')
             .on('mouseover',null).on('mousemove',null).on('mouseout',null);
           that.changeChart(set);
         })
-        .on('mouseout',function(){
-          that.chartReset(set);
-        });
+
       btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
       btn.append('p').text(name);
     })
+    that.bindPlayerButtonsMouse(set);
   },
   buttonHover: function(player,set){
      this.page[set].div.selectAll('g.player').style('opacity',0.1);
@@ -207,9 +212,6 @@ var mlb = {
     this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
     this.page[set].div.selectAll('g.player').style('opacity',1);
   },
-  // clickPlayer: function(player,set){
-  //
-  // },
   // toolHov: function(){
   //   var player = hitDiv.select('.playerBtn.clicked').attr('player');
   //   var data = hitData.filter(function(b){return b.player == player})[0];
