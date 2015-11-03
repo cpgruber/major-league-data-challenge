@@ -32,6 +32,13 @@ var mlb = {
     this.page[set].timeInput = this.page[set].div.selectAll('input.time');
     this.page[set].statsInput = this.page[set].div.selectAll('input.stats');
 
+    this.page[set].tooltip = this.page[set].svg.append('g')
+      .attr('class','tooltip').style('visibility','hidden');
+    this.page[set].tooltip.append('line').attr('x1',0).attr('x2',0)
+      .style('stroke','black').style('stroke-width',1);
+    // this.page[set].tooltip.append('circle').attr('r',15).style('fill','white');
+    this.page[set].tooltip.append('text').attr('dy',7.5);
+
     this.page[set].xAxis = this.page[set].svg.append('svg:g').attr('class','xaxis')
       .attr('transform','translate(0,'+(this.svgAtt.height-this.svgAtt.margins.bottom)+')');
     this.page[set].yAxis = this.page[set].svg.append('svg:g').attr('class','yaxis')
@@ -190,13 +197,25 @@ var mlb = {
             d3.select(this).attr('class','playerBtn');
             that.changeChart(set);
             that.bindPlayerButtonsMouse(set);
+            that.page[set].svg.on('mousemove',null).on('mouseover',null).on('mouseout',null);
             return;
           }
           that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
           d3.select(this).attr('class','playerBtn clicked');
+          that.buttonHover(guy,set);
           that.page[set].div.selectAll('.playerBtn')
             .on('mouseover',null).on('mousemove',null).on('mouseout',null);
           that.changeChart(set);
+          that.page[set].svg
+            .on('mouseover',function(){
+              that.toolHov(guy,set);
+            })
+            .on('mousemove',function(){
+              that.toolHov(guy,set);
+            })
+            .on('mouseout',function(){
+              that.toolUnhov(set);
+            })
         })
 
       btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
@@ -212,42 +231,39 @@ var mlb = {
     this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
     this.page[set].div.selectAll('g.player').style('opacity',1);
   },
-  // toolHov: function(){
-  //   var player = hitDiv.select('.playerBtn.clicked').attr('player');
-  //   var data = hitData.filter(function(b){return b.player == player})[0];
-  //   var field = hitDiv.select('#clicker').node().value;
-  //   var time = hitDiv.select('input[name="optradio1"]:checked').node().value;
-  //   var set  = hitDiv.select('input[name="optradio2"]:checked').node().value;
-  //
-  //   var left = d3.event.offsetX;
-  //   var year = d3.round(xInv(left),0);
-  //   var top = d3.event.offsetY;
-  //
-  //   var xLeft = x(year);
-  //   var yData = (time == 'time')?data[set].filter(function(b){return b.year == year})[0]:
-  //   data[set][year-1];
-  //
-  //   if (yData){
-  //     var yTop = y(yData[field]);
-  //     var mid = y.domain()[1]/2;
-  //     cTop = (yData[field]>mid)?100:-100;
-  //     //y2 = (yData[field]>mid)?100:-100;
-  //     if (yTop){
-  //       hitTip.style('visibility','visible')
-  //         .attr('transform','translate('+xLeft+','+yTop+')');
-  //       hitTip.selectAll('*').attr('transform','translate(0,'+cTop+')');
-  //       hitTip.select('line').attr('y1',0).attr('y2',cTop*(-1))
-  //       //hitTip.select('circle').attr('transform','translate(0,'+cTop+')');
-  //     }
-  //     //hitTip.select('line').attr('y1',yTop).attr('y2',y(yData[field]))
-  //   }else{
-  //     hitTip.style('visibility','hidden')
-  //   }
-  //   hitTip.select('text').text(d3.round(yData[field],3));
-  // },
-  // toolUnhov: function(){
-  //   hitTip.style('visibility','hidden');
-  // },
+  toolHov: function(player,set){
+
+    var field = this.getField(set);
+    var time = this.getTime(set);
+    var stats = this.getStats(set);
+    var data = this.playerData[set].filter(function(b){return b.player == player})[0];
+
+    var left = d3.event.offsetX;
+    var year = d3.round(this.svgAtt.xScale_inv(left),0);
+    var top = d3.event.offsetY;
+
+    var xLeft = this.svgAtt.xScale(year);
+    var yData = (time == 'time')?data[stats].filter(function(b){return b.year == year})[0]:
+    data[stats][year-1];
+
+    if (yData){
+      var yTop = this.svgAtt.yScale(yData[field]);
+      var mid = this.svgAtt.yScale.domain()[1]/2;
+      cTop = (yData[field]>mid)?100:-100;
+      if (yTop){
+        this.page[set].tooltip.style('visibility','visible')
+          .attr('transform','translate('+xLeft+','+yTop+')');
+        this.page[set].tooltip.selectAll('*').attr('transform','translate(0,'+cTop+')');
+        this.page[set].tooltip.select('line').attr('y1',0).attr('y2',cTop*(-1))
+      }
+    }else{
+      this.page[set].tooltip.style('visibility','hidden')
+    }
+    this.page[set].tooltip.select('text').text(d3.round(yData[field],3));
+  },
+  toolUnhov: function(set){
+    this.page[set].tooltip.style('visibility','hidden');
+  },
   calculateCumulative(data,that,set){
     data.forEach(function(dp){
       var cumulative = dp.cumulative;
@@ -325,36 +341,6 @@ var mlb = {
     this.page[set].statsInput.on('change',function(){
       that.changeChart(set);
     });
-    // var thisDiv = this.page[set].div;
-    // var thisSvg = this.page[set].svg;
-    // thisDiv.selectAll('.playerBtn').on('click',function(){
-    //   var clickedClasses = d3.select(this).attr('class').split(" ");
-    //   //hitDiv.selectAll('g.player').on('mousemove',null).on('mouseover',null).on('mouseout',null);
-    //   thisSvg.on('mousemove',null).on('mouseover',null).on('mouseout',null);
-    //   if (clickedClasses.indexOf('clicked') !== -1){
-    //     thisDiv.selectAll('.playerBtn').attr('class','playerBtn')
-    //       .on('mouseover', function(){
-    //         var player = d3.select(this).attr('player');
-    //         that.buttonHover(player);
-    //       })
-    //       .on('mousemove', function(){
-    //         var player = d3.select(this).attr('player');
-    //         that.buttonHover(player);
-    //       })
-    //       .on('mouseout', that.chartReset);
-    //       // hitTip.style('visibility','hidden');
-    //       // var time  = hitDiv.select('input[name="optradio1"]:checked').node().value;
-    //       // timeChange(time);
-    //   }else{
-    //     thisDiv.selectAll('.playerBtn').attr('class','playerBtn');
-    //     d3.select(this).attr('class','playerBtn clicked');
-    //     thisDiv.selectAll('.playerBtn').on('mousemove',null).on('mouseover',null).on('mouseout',null);
-    //     var player = d3.select(this).attr('player');
-    //     // hitTip.style('visibility','hidden');
-    //     // buttonHover(player);
-    //     // clickPlayer(player);
-    //   }
-    // });
   },
   initViz:function(){
     this.getPageComponents('hitters');
@@ -365,7 +351,6 @@ var mlb = {
 
     this.bindEvents('hitters');
     this.bindEvents('pitchers');
-
   }
 }
 mlb.initViz();
