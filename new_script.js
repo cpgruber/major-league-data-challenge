@@ -108,7 +108,7 @@ var mlb = {
     var lineFx = this.svgAtt.lineFx
       .defined(function(d) { return d[field] >= 0; })
       .y(function(d) {return y(d[field])})
-      .x(function(d,i) {return x((time=='career')?i:d.year)})
+      .x(function(d,i) {return x((time=='career')?i+1:d.year)})
 
     this.page[set].svg.selectAll('.player').select('path')
       .transition().duration(500).attr('d', function(d){return lineFx(d[stats])});
@@ -133,7 +133,7 @@ var mlb = {
           min = 0;
           max = d.seasonal.length;
         }else{
-          min = d.seasonal[0].year;
+          min = d.seasonal[0].year - 1;//just to give a little buffer on the left side
           max = d.seasonal[d.seasonal.length-1].year;
         }
       })
@@ -241,7 +241,8 @@ var mlb = {
     var year = d3.round(this.svgAtt.xScale_inv(left),0);
     var top = d3.event.offsetY;
 
-    var xLeft = this.svgAtt.xScale((time=='career')?year-1:year);
+    // var xLeft = this.svgAtt.xScale((time=='career')?year:year);
+    xLeft = this.svgAtt.xScale(year);
     var yData = (time == 'time')?data[stats].filter(function(b){return b.year == year})[0]:
     data[stats][year-1];
 
@@ -268,7 +269,6 @@ var mlb = {
     this.page[set].tooltip.style('visibility','hidden');
   },
   calculateCumulative(data,that,set){
-    console.log(data);
     data.forEach(function(dp){
       var cumulative = dp.cumulative;
       if (set == 'hitting'){
