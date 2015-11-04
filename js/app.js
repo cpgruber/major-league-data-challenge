@@ -44,7 +44,7 @@ var mlb = {
     this.page[set].tooltip.append('line').attr('x1',0).attr('x2',0)
       .style('stroke','black').style('stroke-width',1);
     this.page[set].tooltip.append('circle').attr('r',20).attr('class','mainC');
-    this.page[set].tooltip.append('circle').attr('r',5).attr('class','lineC');
+    this.page[set].tooltip.append('circle').attr('r',3.5).attr('class','lineC');
     this.page[set].tooltip.append('text').attr('dy',8);
   },
   playerData:{

@@ -145,8 +145,9 @@ select:focus {
   stroke-width:3;
 }
 .tooltip .lineC{
-  fill:black;
-  fill-opacity:0.5;
+  fill:red;
+  fill-opacity:0.9;
+  stroke:red;
 }
 .tooltip line{
   stroke-dasharray:5,5;

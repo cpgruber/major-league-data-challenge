@@ -144,7 +144,7 @@ var palette = {
     name:'Houston Astros'
   },
   LAA:{
-    stroke:'#002244',
+    stroke:'#b71234',
     fill:'#fff',
     text:'#b71234',
     name:'Los Angeles Angels'
