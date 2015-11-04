@@ -55,9 +55,9 @@ var mlb = {
     var that = this;
     var data = this.playerData[set];
     for (var i=0;i<10;i++){
-      d3.csv(set+'/player'+i+'.csv')
+      d3.csv('data/'+set+'/player'+i+'.csv')
         .row(function(d) {
-          console.log(d.Player,d.Tm,d.Year);
+          // console.log(d.Player,d.Tm,d.Year);
           var da;
           if (set == 'hitters'){
             da = {
@@ -245,7 +245,10 @@ var mlb = {
     xLeft = this.svgAtt.xScale(year);
     var yData = (time == 'time')?data[stats].filter(function(b){return b.year == year})[0]:
       data[stats][year-1];
+
     if (yData){
+      var teamInfo = palette[yData.team];
+
       var yTop = this.svgAtt.yScale(yData[field]);
       var mid = this.svgAtt.yScale.domain()[1]/2;
       cTop = (yData[field]>mid)?100:-100;
@@ -254,11 +257,13 @@ var mlb = {
           .attr('transform','translate('+xLeft+','+yTop+')');
         this.page[set].tooltip.selectAll('*').attr('transform','translate(0,'+cTop+')');
         this.page[set].tooltip.select('line').attr('y1',0).attr('y2',cTop*(-1))
-        this.page[set].tooltip.select('circle').attr('transform','translate(0,'+cTop+')');
+        this.page[set].tooltip.select('circle')
+          .style('fill',teamInfo.fill).style('stroke',teamInfo.stroke)
+          .attr('transform','translate(0,'+cTop+')');
       }
       var dataDisp = d3.round(yData[field],3);
       if (dataDisp >= 0){
-        this.page[set].tooltip.select('text').text(dataDisp);
+        this.page[set].tooltip.select('text').text(dataDisp).style('fill',teamInfo.text);
       }
     }else{
       this.page[set].tooltip.style('visibility','hidden')

@@ -12,9 +12,9 @@ var palette = {
     name:'St. Louis Cardinals'
   },
   PIT:{
-    stroke:'#fdb829',
+    stroke:'#FCB827',
     fill:'#000',
-    text:'#fdb829',
+    text:'#FCB827',
     name:'Pittsburgh Pirates'
   },
   SFG:{
