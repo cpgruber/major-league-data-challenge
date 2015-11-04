@@ -90,13 +90,15 @@ input[type="radio"]{
 }
 label{
   position:relative;
-  padding-right:1.5em;
+  padding-right:30px;
+  padding-left:20px;
+  cursor: pointer;
 }
 label:after{
   content:'';
   display:block;
   position:absolute;
-  right:0;
+  left:0;
   top:5px;
   width:16px;
   height:16px;
@@ -107,7 +109,7 @@ input[type="radio"]:checked + label:before{
   content:'';
   display:block;
   position:absolute;
-  right:4px;
+  left:4px;
   top:9px;
   width:8px;
   height:8px;
@@ -123,13 +125,16 @@ select {
   border-radius: 4px;
   box-shadow: none;
   box-sizing: border-box;
+  font-size:16px;
+  font-family:'Oswald','arial',sans-serif;
 }
 select:focus {
-  border: 2px solid gray;
+  border: 1.5px solid gray;
   outline: 0;
 }
 .tooltip text{
   text-anchor:middle;
+  stroke-width:0;
 }
 .tooltip circle{
   stroke-width:3;

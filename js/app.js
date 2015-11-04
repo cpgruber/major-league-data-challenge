@@ -9,17 +9,6 @@ var mlb = {
       bottom:20
     }
   },
-  buildScales:function(){
-    this.svgAtt.xScale = d3.scale.linear()
-      .range([this.svgAtt.margins.left,this.svgAtt.width-this.svgAtt.margins.right]);
-    this.svgAtt.xScale_inv = d3.scale.linear()
-      .domain([this.svgAtt.margins.left,this.svgAtt.width-this.svgAtt.margins.right]);
-    this.svgAtt.yScale = d3.scale.linear()
-      .range([(this.svgAtt.height-this.svgAtt.margins.bottom),this.svgAtt.margins.top]);
-    this.svgAtt.lineFx = d3.svg.line().interpolate('linear');
-    this.page.xAxis = d3.svg.axis().orient('bottom').tickFormat(d3.format('d'));
-    this.page.yAxis = d3.svg.axis().orient('left');
-  },
   page:{
     hitters:{},
     pitchers:{}
@@ -32,14 +21,22 @@ var mlb = {
     this.page[set].timeInput = this.page[set].div.selectAll('input.time');
     this.page[set].statsInput = this.page[set].div.selectAll('input.stats');
     this.page[set].displayName = this.page[set].div.select('.dispName');
-    // this.page[set].teamName = this.page[set].div.select('.teamName');
+
+    this.page[set].xScale = d3.scale.linear()
+      .range([this.svgAtt.margins.left,this.svgAtt.width-this.svgAtt.margins.right]);
+    this.page[set].xScale_inv = d3.scale.linear()
+      .domain([this.svgAtt.margins.left,this.svgAtt.width-this.svgAtt.margins.right]);
+    this.page[set].yScale = d3.scale.linear()
+      .range([(this.svgAtt.height-this.svgAtt.margins.bottom),this.svgAtt.margins.top]);
 
     this.page[set].xAxis = this.page[set].svg.append('svg:g').attr('class','xaxis')
       .attr('transform','translate(0,'+(this.svgAtt.height-this.svgAtt.margins.bottom)+')');
     this.page[set].yAxis = this.page[set].svg.append('svg:g').attr('class','yaxis')
       .attr('transform','translate('+(this.svgAtt.margins.left)+',0)');
 
-    this.buildScales();
+    this.svgAtt.lineFx = d3.svg.line().interpolate('linear');
+    this.page.xAxis = d3.svg.axis().orient('bottom').tickFormat(d3.format('d'));
+    this.page.yAxis = d3.svg.axis().orient('left');
   },
   buildTooltip:function(set){
     this.page[set].tooltip = this.page[set].svg.append('g')
@@ -147,8 +144,8 @@ var mlb = {
         max = d3.max(this.playerData[set], function(d) {return d.seasonal[d.seasonal.length-1].year;});
       }
     }
-    var x = this.svgAtt.xScale.domain([min,max]);
-    this.svgAtt.xScale_inv.range([min,max]);
+    var x = this.page[set].xScale.domain([min,max]);
+    this.page[set].xScale_inv.range([min,max]);
     return x;
   },
   getYdomain:function(set,stats,field){
@@ -157,7 +154,7 @@ var mlb = {
         return e[field];
       });
     });
-    var y = this.svgAtt.yScale.domain([0,fieldMax]);
+    var y = this.page[set].yScale.domain([0,fieldMax]);
     return y;
   },
   getField:function(set){
@@ -233,7 +230,6 @@ var mlb = {
     this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
     this.page[set].div.selectAll('g.player').style('opacity',0.6);
     this.page[set].displayName.text('');
-    // this.page[set].teamName.text('');
   },
   toolHov: function(player,set){
     var field = this.getField(set);
@@ -242,24 +238,27 @@ var mlb = {
     var data = this.playerData[set].filter(function(b){return b.player == player})[0];
 
     var left = d3.event.offsetX;
-    var year = d3.round(this.svgAtt.xScale_inv(left),0);
+    var year = d3.round(this.page[set].xScale_inv(left),0);
     var top = d3.event.offsetY;
 
-    xLeft = this.svgAtt.xScale(year);
+    var xLeft = this.page[set].xScale(year);
     var yData = (time == 'time')?data[stats].filter(function(b){return b.year == year})[0]:
       data[stats][year-1];
 
     if (yData){
       var team = yData.team.split(",");
       var teamInfo = palette[team[0]];
+      if (!teamInfo){
+        return;
+      }
       var teamName = teamInfo.name;
       if (team.length>1){
         teamName += ' and ' + palette[team[1]].name;
       }
 
       this.page[set].div.select('.teamName').text(teamName);
-      var yTop = this.svgAtt.yScale(yData[field]);
-      var mid = this.svgAtt.yScale.domain()[1]/2;
+      var yTop = this.page[set].yScale(yData[field]);
+      var mid = this.page[set].yScale.domain()[1]/2;
       cTop = (yData[field]>mid)?100:-100;
       if (yTop){
         this.page[set].tooltip.style('visibility','visible')
@@ -272,7 +271,8 @@ var mlb = {
       }
       var dataDisp = d3.round(yData[field],3);
       if (dataDisp >= 0){
-        this.page[set].tooltip.select('text').text(dataDisp).style('fill',teamInfo.text);
+        this.page[set].tooltip.select('text').text(dataDisp)
+          .style('fill',teamInfo.text);
       }
     }else{
       this.page[set].tooltip.style('visibility','hidden')
