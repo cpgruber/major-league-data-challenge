@@ -23,6 +23,11 @@ h2{
   padding-bottom:30px;
   margin-bottom:5rem;
 }
+.description{
+  max-width:1005px;
+  margin:0 auto;
+  margin-bottom:2rem;
+}
 .cf:after{
   content:'';
   clear:both;
@@ -75,9 +80,7 @@ select,label{
   float:left;
 }
 .inputContain{
-  /*display:inline-block;*/
   margin:10px 0;
-  /*clear:right;*/
 }
 .xaxis path, .xaxis line,.yaxis path, .yaxis line {
   fill: none;
@@ -167,4 +170,11 @@ g.player{
   font-family: 'Oswald','arial',sans-serif;
   font-size:24px;
   margin:0;
+}
+footer{
+  padding:2rem;
+  text-align: center;
+}
+a{
+  color:red;
 }
