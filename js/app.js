@@ -32,13 +32,7 @@ var mlb = {
     this.page[set].timeInput = this.page[set].div.selectAll('input.time');
     this.page[set].statsInput = this.page[set].div.selectAll('input.stats');
     this.page[set].displayName = this.page[set].div.select('.dispName');
-
-    this.page[set].tooltip = this.page[set].svg.append('g')
-      .attr('class','tooltip').style('visibility','hidden');
-    this.page[set].tooltip.append('line').attr('x1',0).attr('x2',0)
-      .style('stroke','black').style('stroke-width',1);
-    this.page[set].tooltip.append('circle').attr('r',15);
-    this.page[set].tooltip.append('text').attr('dy',7.5);
+    // this.page[set].teamName = this.page[set].div.select('.teamName');
 
     this.page[set].xAxis = this.page[set].svg.append('svg:g').attr('class','xaxis')
       .attr('transform','translate(0,'+(this.svgAtt.height-this.svgAtt.margins.bottom)+')');
@@ -46,6 +40,14 @@ var mlb = {
       .attr('transform','translate('+(this.svgAtt.margins.left)+',0)');
 
     this.buildScales();
+  },
+  buildTooltip:function(set){
+    this.page[set].tooltip = this.page[set].svg.append('g')
+      .attr('class','tooltip').style('visibility','hidden');
+    this.page[set].tooltip.append('line').attr('x1',0).attr('x2',0)
+      .style('stroke','black').style('stroke-width',1);
+    this.page[set].tooltip.append('circle').attr('r',20);
+    this.page[set].tooltip.append('text').attr('dy',8);
   },
   playerData:{
     hitters:[],
@@ -57,7 +59,6 @@ var mlb = {
     for (var i=0;i<10;i++){
       d3.csv('data/'+set+'/player'+i+'.csv')
         .row(function(d) {
-          // console.log(d.Player,d.Tm,d.Year);
           var da;
           if (set == 'hitters'){
             da = {
@@ -92,6 +93,7 @@ var mlb = {
       .attr('class', function(d){return 'player '+d.player});
     this.page[set].lines = this.page[set].players.append('path')
     this.changeChart(set);
+    this.buildTooltip(set);
   },
   changeChart:function(set){
     var field = this.getField(set);
@@ -231,6 +233,7 @@ var mlb = {
     this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
     this.page[set].div.selectAll('g.player').style('opacity',0.6);
     this.page[set].displayName.text('');
+    // this.page[set].teamName.text('');
   },
   toolHov: function(player,set){
     var field = this.getField(set);
@@ -247,8 +250,14 @@ var mlb = {
       data[stats][year-1];
 
     if (yData){
-      var teamInfo = palette[yData.team];
+      var team = yData.team.split(",");
+      var teamInfo = palette[team[0]];
+      var teamName = teamInfo.name;
+      if (team.length>1){
+        teamName += ' and ' + palette[team[1]].name;
+      }
 
+      this.page[set].div.select('.teamName').text(teamName);
       var yTop = this.svgAtt.yScale(yData[field]);
       var mid = this.svgAtt.yScale.domain()[1]/2;
       cTop = (yData[field]>mid)?100:-100;
@@ -271,6 +280,7 @@ var mlb = {
   },
   toolUnhov: function(set){
     this.page[set].tooltip.style('visibility','hidden');
+    this.page[set].div.select('.teamName').text('');
   },
   calculateCumulative(data,that,set){
     data.forEach(function(dp){

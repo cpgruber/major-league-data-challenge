@@ -154,5 +154,11 @@ var palette = {
     fill:'#fff',
     text:'#000',
     name:'Cincinnati Reds'
+  },
+  CHW:{
+    stroke:'#fff',
+    fill:'#000',
+    text:'#fff',
+    name:'Chicago White Sox'
   }
 }

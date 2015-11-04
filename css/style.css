@@ -23,7 +23,7 @@ h2{
   padding-bottom:30px;
   margin-bottom:5rem;
 }
-.container:after{
+.cf:after{
   content:'';
   clear:both;
   display:table;
@@ -54,7 +54,6 @@ h2{
   position:relative;
   float:left;
   width:700px;
-  /*background-image:url(http://pizzabytheslice.com/img/posts/steampunk-gears/photoshop-sand-pattern.jpg);*/
 }
 .clicked{
   background-color:black;
@@ -63,9 +62,20 @@ h2{
 select,label{
   display:inline-block;
 }
-.controls{
-  display:block;
+.chartInfo{
   margin-bottom:20px;
+  position: relative;
+  display:block;
+}
+.controls > p{
+  display:inline;
+  margin-right:5px;
+}
+.controls{
+  float:left;
+}
+.inputContain{
+  margin:10px 0;
 }
 .xaxis path, .xaxis line,.yaxis path, .yaxis line {
   fill: none;
@@ -107,7 +117,7 @@ input[type="radio"]:checked + label:before{
 }
 select {
   height: 38px;
-  padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
+  padding: 6px 10px;
   background-color: #fff;
   border: 1px solid #D1D1D1;
   border-radius: 4px;
@@ -115,15 +125,14 @@ select {
   box-sizing: border-box;
 }
 select:focus {
-  border: 1px solid gray;
+  border: 2px solid gray;
   outline: 0;
 }
 .tooltip text{
   text-anchor:middle;
 }
 .tooltip circle{
-  fill:white;
-  stroke:black;
+  stroke-width:3;
 }
 .tooltip line{
   stroke-dasharray:5,5;
@@ -137,10 +146,14 @@ g.player{
   opacity:0.6;
 }
 .dispName{
-  position:absolute;
-  text-align:center;
-  width:100%;
+  text-align: center;
   font-family: 'Oswald','arial',sans-serif;
   font-size:42px;
-  z-index: -1;
+  margin:0;
+}
+.teamName{
+  text-align: center;
+  font-family: 'Oswald','arial',sans-serif;
+  font-size:24px;
+  margin:0;
 }
