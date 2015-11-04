@@ -61,10 +61,12 @@ var mlb = {
           if (set == 'hitters'){
             da = {
               player:d.Player,team:d.Tm,year:+d.Year,hits:+d.H,doubles:+d['2B'],triples:+d['3B'],RBI:+d.RBI,HR:+d.HR,runs:+d.R,TB:+d.TB,AB:+d.AB,slug:+d.SLG,BA:+d.BA,BB:+d.BB,IBB:+d.IBB,SB:+d.SB,CS:+d.CS,K:+d.SO,G:+d.G,OPS:+d.OPS
+              /*,WAR:+d.WAR*/
             }
           }else{
             da = {
               player:d.Player,team:d.Tm,year:+d.Year,wins:+d.W,losses:+d.L,ERA:+d.ERA,hits:+d.H,IP:+d.IP,ER:+d.ER,HR:+d.HR,K:+d.SO,WHIP:+d.WHIP,H9:+d.H9,BB:+d.BB,IBB:+d.IBB,HR9:+d.HR9,BB9:+d.BB9,K9:+d.SO9,KpW:+d['SO/W']
+              /*,WAR:+d.WAR*/
             }
           }
           return da;
@@ -288,7 +290,7 @@ var mlb = {
     data.forEach(function(dp){
       var cumulative = dp.cumulative;
       if (set == 'hitters'){
-        var hits=0,doubles=0,triples=0,RBI=0,HR=0,R=0,AB=0,TB=0,OPS=0;
+        var hits=0,doubles=0,triples=0,RBI=0,HR=0,R=0,AB=0,TB=0,OPS=0/*,WAR=0*/;
         for (var b=0;b<cumulative.length;b++){
           var thisData = cumulative[b];
           //do this to preserve breaks for missed seasons; could also remove record, but would then
@@ -303,6 +305,7 @@ var mlb = {
             thisData.BA = 'null';
             thisData.slug = 'null';
             thisData.OPS = 'null';
+            // thisData.WAR = 'null';
             continue;
           }
           hits += thisData.hits;
@@ -314,6 +317,7 @@ var mlb = {
           AB += thisData.AB;
           TB += thisData.TB;
           OPS += thisData.OPS;
+          // WAR += thisData.WAR;
           thisData.hits = hits;
           thisData.doubles = doubles;
           thisData.triples = triples;
@@ -324,9 +328,10 @@ var mlb = {
           thisData.BA = (hits/AB);
           thisData.slug = (TB/AB);
           thisData.OPS = OPS/(b+1);
+          // thisData.WAR = WAR;
         }
       }else{
-        var hits=0,wins=0,losses=0,K=0,HR=0,ER=0,BB=0,IP=0;
+        var hits=0,wins=0,losses=0,K=0,HR=0,ER=0,BB=0,IP=0/*,WAR=0*/;
         for (var b=0;b<cumulative.length;b++){
           var thisData = cumulative[b];
           hits += thisData.hits;
@@ -337,6 +342,7 @@ var mlb = {
           ER += thisData.ER;
           BB += thisData.BB;
           IP += thisData.IP;
+          // WAR += thisData.WAR;
           thisData.hits = hits;
           thisData.wins = wins;
           thisData.losses = losses;
@@ -346,6 +352,7 @@ var mlb = {
           thisData.BB = BB;
           thisData.ERA = 9*(ER/IP);
           thisData.WHIP = (BB+hits)/IP;
+          // thisData.WAR = WAR;
         }
       }
     })
