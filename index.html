@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>MLB Data Viz challenge</title>
+    <title>Major League Data Challenge</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
@@ -16,7 +16,7 @@
     <h1>Major League Data Challenge</h1>
 
     <div class='description'>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      This data visualization allows you to view, track, and compare the careers of baseball's (arguably) 10 best hitters and pitchers. Choose a statistic from the dropdown, whether you want to view that statistic for for each year individually or as running career total, and whether you want that statistic to be shown in a historical context or from a career baseline. Hover over a player in the list to highlight his line in the chart. Click on a player in the list to focus the chart on his data. When a player is clicked, hover over the chart to reveal data values for each season. Click on the player again to reset the chart to its intial behavior.
     </div>
   </header>
 
@@ -24,7 +24,7 @@
     <h2>Best Bats</h2>
     <div class='chartInfo cf'>
       <div class='controls'>
-        <p>Pick a Stat :</p>
+        <p>Pick a Statistic :</p>
       	<select class='clicker'>
       		<option value='HR'>Homers</option>
       		<option value='hits'>Hits</option>
@@ -35,7 +35,7 @@
           <option value='OPS'>OPS</option>
       	</select>
         <div class='inputContain'>
-          <p>View Stat :</p>
+          <p>View Statistic :</p>
           <input class='stats' type="radio" value="seasonal" id="r3"name="optradio2" checked>
           <label for="r3">Year-by-Year</label>
           <input class='stats' type="radio" value="cumulative" id="r4"name="optradio2">
@@ -60,7 +60,7 @@
     <h2>Best Arms</h2>
     <div class='chartInfo cf'>
       <div class='controls'>
-        <p>Pick a Stat :</p>
+        <p>Pick a Statistic :</p>
         <select class='clicker'>
           <option value='wins'>Wins</option>
           <option value='losses'>Losses</option>
@@ -70,7 +70,7 @@
           <option value='WHIP'>WHIP</option>
         </select>
         <div class='inputContain'>
-          <p>View Stat :</p>
+          <p>View Statistic :</p>
           <input class='stats' type="radio" value="seasonal" id="r7"name="optradio4" checked>
           <label for="r7">Year-by-Year</label>
           <input class='stats' type="radio" value="cumulative" id="r8"name="optradio4">
