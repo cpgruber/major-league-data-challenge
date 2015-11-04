@@ -67,7 +67,7 @@ select,label{
   position: relative;
   display:block;
 }
-.controls > p{
+.controls > p,.inputContain > p{
   display:inline;
   margin-right:5px;
 }
@@ -75,7 +75,9 @@ select,label{
   float:left;
 }
 .inputContain{
+  /*display:inline-block;*/
   margin:10px 0;
+  /*clear:right;*/
 }
 .xaxis path, .xaxis line,.yaxis path, .yaxis line {
   fill: none;
@@ -90,7 +92,7 @@ input[type="radio"]{
 }
 label{
   position:relative;
-  padding-right:30px;
+  margin-right:10px;
   padding-left:20px;
   cursor: pointer;
 }
@@ -129,7 +131,7 @@ select {
   font-family:'Oswald','arial',sans-serif;
 }
 select:focus {
-  border: 1.5px solid gray;
+  border: 1.5px solid red;
   outline: 0;
 }
 .tooltip text{
