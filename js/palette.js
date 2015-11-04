@@ -1,8 +1,8 @@
 var palette = {
   BOS:{
-    stroke:'#002244',
-    fill:'#ffffff',
-    text:'#c60c30',
+    stroke:'#c60c30',
+    fill:'#002244',
+    text:'#ffffff',
     name:'Boston Red Sox'
   },
   STL:{
@@ -30,8 +30,8 @@ var palette = {
     name:'New York Mets'
   },
   NYY:{
-    stroke:'#808080',
-    fill:'#fff',
+    stroke:'#1c2841',
+    fill:'#808080',
     text:'#1c2841',
     name:'New York Yankees'
   },
@@ -49,8 +49,8 @@ var palette = {
   },
   DET:{
     stroke:'#de4406',
-    fill:'#fff',
-    text:'#001742',
+    fill:'#001742',
+    text:'#fff',
     name:'Detroit Tigers'
   },
   NYG:{
@@ -68,18 +68,18 @@ var palette = {
   TOR:{
     stroke:'#0f1e42',
     fill:'#003da5',
-    text:'#da291c',
+    text:'#fff',
     name:'Toronto Blue Jays'
   },
   WSH:{
-    stroke:'navy blue',
-    fill:'#fff',
-    text:'red',
-    name:'Washington ?'
+    stroke:'#89002C',
+    fill:'#F2F0D9',
+    text:'#021068',
+    name:'Washington Senators'
   },
   CLV:{
-    stroke:'#d6d6d6',
-    fill:'#fff',
+    stroke:'#000',
+    fill:'#d6d6d6',
     text:'#000',
     name:'Cleveland Spiders'
   },
