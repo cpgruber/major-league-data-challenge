@@ -136,8 +136,12 @@ select:focus {
   text-anchor:middle;
   stroke-width:0;
 }
-.tooltip circle{
+.tooltip .mainC{
   stroke-width:3;
+}
+.tooltip .lineC{
+  fill:black;
+  fill-opacity:0.5;
 }
 .tooltip line{
   stroke-dasharray:5,5;

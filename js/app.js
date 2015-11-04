@@ -43,7 +43,8 @@ var mlb = {
       .attr('class','tooltip').style('visibility','hidden');
     this.page[set].tooltip.append('line').attr('x1',0).attr('x2',0)
       .style('stroke','black').style('stroke-width',1);
-    this.page[set].tooltip.append('circle').attr('r',20);
+    this.page[set].tooltip.append('circle').attr('r',20).attr('class','mainC');
+    this.page[set].tooltip.append('circle').attr('r',5).attr('class','lineC');
     this.page[set].tooltip.append('text').attr('dy',8);
   },
   playerData:{
@@ -265,9 +266,10 @@ var mlb = {
           .attr('transform','translate('+xLeft+','+yTop+')');
         this.page[set].tooltip.selectAll('*').attr('transform','translate(0,'+cTop+')');
         this.page[set].tooltip.select('line').attr('y1',0).attr('y2',cTop*(-1))
-        this.page[set].tooltip.select('circle')
+        this.page[set].tooltip.select('.mainC')
           .style('fill',teamInfo.fill).style('stroke',teamInfo.stroke)
           .attr('transform','translate(0,'+cTop+')');
+        this.page[set].tooltip.select('.lineC').attr('transform','translate(0,0)');
       }
       var dataDisp = d3.round(yData[field],3);
       if (dataDisp >= 0){
