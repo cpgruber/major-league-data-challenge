@@ -57,7 +57,7 @@ var mlb = {
     for (var i=0;i<10;i++){
       d3.csv(set+'/player'+i+'.csv')
         .row(function(d) {
-          // console.log(d.Tm,d.Year);
+          console.log(d.Player,d.Tm,d.Year);
           var da;
           if (set == 'hitters'){
             da = {
@@ -223,13 +223,14 @@ var mlb = {
     that.bindPlayerButtonsMouse(set);
   },
   buttonHover: function(player,set){
-     this.page[set].div.selectAll('g.player').style('opacity',0.1);
+     this.page[set].div.selectAll('g.player').style('opacity',0.2);
      this.page[set].div.selectAll('g.player.'+player).style('opacity',1);
      this.page[set].displayName.text(player.replace("_"," "));
   },
   chartReset: function(set){
     this.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
-    this.page[set].div.selectAll('g.player').style('opacity',1);
+    this.page[set].div.selectAll('g.player').style('opacity',0.6);
+    this.page[set].displayName.text('');
   },
   toolHov: function(player,set){
     var field = this.getField(set);
