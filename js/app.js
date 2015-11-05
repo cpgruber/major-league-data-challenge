@@ -105,7 +105,7 @@ var mlb = {
     var xAxis = this.page.xAxis.scale(x);
 
     var lineFx = this.svgAtt.lineFx
-      .defined(function(d) { return d[field] >= -10;})//<-bandaid
+      .defined(function(d) {return (d[field]/1 || d[field]==0);})
       .y(function(d) {return y(d[field])})
       .x(function(d,i) {return x((time=='career')?i+1:d.year)})
 
@@ -164,7 +164,6 @@ var mlb = {
     }else{
       var fieldMin = 0;
     }
-    console.log(fieldMin);
     var y = this.page[set].yScale.domain([fieldMin,fieldMax]);
     return y;
   },
@@ -282,7 +281,7 @@ var mlb = {
         this.page[set].tooltip.select('.lineC').attr('transform','translate(0,0)');
       }
       var dataDisp = d3.round(yData[field],3);
-      if (dataDisp){// >= 0){
+      if (yData[field]/1 || yData[field] == 0){
         this.page[set].tooltip.select('text').text(dataDisp)
           .style('fill',teamInfo.text);
       }

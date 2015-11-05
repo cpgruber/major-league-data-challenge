@@ -31,7 +31,7 @@ var palette = {
   },
   NYY:{
     stroke:'#1c2841',
-    fill:'#808080',
+    fill:'#c3c3c3',
     text:'#1c2841',
     name:'New York Yankees'
   },
@@ -78,9 +78,9 @@ var palette = {
     name:'Washington Senators'
   },
   CLV:{
-    stroke:'#000',
-    fill:'#d6d6d6',
-    text:'#000',
+    stroke:'#A70512',
+    fill:'#06265F',
+    text:'#fff',
     name:'Cleveland Spiders'
   },
   STL1:{
