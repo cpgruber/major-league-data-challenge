@@ -35,9 +35,9 @@ var mlb = {
       .attr('transform','translate('+(this.svgAtt.margins.left)+',0)');
 
     this.page[set].xAxisLabel = this.page[set].svg.append('text').attr('class','axisTitle')
-      .attr('transform','translate('+(this.svgAtt.width/2)+','+(this.svgAtt.height)+')');
+      .attr('transform','translate('+(this.svgAtt.width/2)+','+(this.svgAtt.height-10)+')');
     this.page[set].yAxisLabel = this.page[set].svg.append('text').attr('class','axisTitle')
-      .attr('transform','translate('+(this.svgAtt.margins.left/2)+','+(this.svgAtt.height/2)+')rotate(-90)');
+      .attr('transform','translate('+(20)+','+(this.svgAtt.height/2)+')rotate(-90)');
 
     this.svgAtt.lineFx = d3.svg.line().interpolate('linear');
     this.page.xAxis = d3.svg.axis().orient('bottom').tickFormat(d3.format('d'));
@@ -103,6 +103,9 @@ var mlb = {
     var stats = this.getStats(set);
     var time = this.getTime(set);
 
+    var xLabel = (time=='time')?'year':'career season';
+    var yLabel = this.page[set].fieldInput.select('[value='+field+']').text();
+
     var y = this.getYdomain(set,stats,field);
     var x = this.getXdomain(set,time);
 
@@ -120,8 +123,8 @@ var mlb = {
     this.page[set].div.select('.yaxis').transition().duration(500).call(yAxis);
     this.page[set].div.select('.xaxis').transition().duration(500).call(xAxis);
 
-    this.page[set].xAxisLabel.text(time);
-    this.page[set].yAxisLabel.text(field);
+    this.page[set].xAxisLabel.text(xLabel);
+    this.page[set].yAxisLabel.text(yLabel);
 
   },
   getSelectedPlayer:function(set){
