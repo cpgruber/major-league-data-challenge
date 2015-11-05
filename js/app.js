@@ -103,7 +103,7 @@ var mlb = {
     var stats = this.getStats(set);
     var time = this.getTime(set);
 
-    var xLabel = (time=='time')?'year':'career season';
+    var xLabel = (time=='time')?'Year':'Career Season';
     var yLabel = this.page[set].fieldInput.select('[value='+field+']').text();
 
     var y = this.getYdomain(set,stats,field);
@@ -262,6 +262,7 @@ var mlb = {
     var left = d3.event.offsetX;
     var year = d3.round(this.page[set].xScale_inv(left),0);
     var top = d3.event.offsetY;
+    var dispYear = (time=='time')?year:(year==1)?'R':'y'+year;
 
     var xLeft = this.page[set].xScale(year);
     var yData = (time == 'time')?data[stats].filter(function(b){return b.year == year})[0]:
@@ -273,7 +274,7 @@ var mlb = {
       if (!teamInfo){
         return;
       }
-      var teamName = teamInfo.name;
+      var teamName = dispYear + ' - ' + teamInfo.name;
       if (team.length>1){
         teamName += ' and ' + palette[team[1]].name;
       }
