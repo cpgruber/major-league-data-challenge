@@ -179,3 +179,6 @@ footer{
 a{
   color:red;
 }
+.axisTitle{
+  text-anchor:middle;
+}

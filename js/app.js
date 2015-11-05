@@ -3,10 +3,10 @@ var mlb = {
     width:parseFloat(d3.select('.svgContain').style('width')),
     height:500,
     margins:{
-      left:50,
+      left:60,
       right:50,
       top:20,
-      bottom:20
+      bottom:50
     }
   },
   page:{
@@ -33,6 +33,11 @@ var mlb = {
       .attr('transform','translate(0,'+(this.svgAtt.height-this.svgAtt.margins.bottom)+')');
     this.page[set].yAxis = this.page[set].svg.append('svg:g').attr('class','yaxis')
       .attr('transform','translate('+(this.svgAtt.margins.left)+',0)');
+
+    this.page[set].xAxisLabel = this.page[set].svg.append('text').attr('class','axisTitle')
+      .attr('transform','translate('+(this.svgAtt.width/2)+','+(this.svgAtt.height)+')');
+    this.page[set].yAxisLabel = this.page[set].svg.append('text').attr('class','axisTitle')
+      .attr('transform','translate('+(this.svgAtt.margins.left/2)+','+(this.svgAtt.height/2)+')rotate(-90)');
 
     this.svgAtt.lineFx = d3.svg.line().interpolate('linear');
     this.page.xAxis = d3.svg.axis().orient('bottom').tickFormat(d3.format('d'));
@@ -114,6 +119,10 @@ var mlb = {
 
     this.page[set].div.select('.yaxis').transition().duration(500).call(yAxis);
     this.page[set].div.select('.xaxis').transition().duration(500).call(xAxis);
+
+    this.page[set].xAxisLabel.text(time);
+    this.page[set].yAxisLabel.text(field);
+
   },
   getSelectedPlayer:function(set){
     var player;
