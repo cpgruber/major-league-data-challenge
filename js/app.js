@@ -230,11 +230,11 @@ var mlb = {
           }
           if (clickedBtn && !clicked){
             d3.select(this).attr('class','playerBtn compare');
-            that.page[set].svg.select('g.'+guy).attr(guy+' compare').style('opacity',0.55)
+            that.page[set].svg.select('g.'+guy).attr('class','player '+guy+' compare').style('opacity',0.55)
               .selectAll('path').style('stroke','red');
           }
           if (compareBtn){
-            that.page[set].div.selectAll('.compare').attr('class','playerBtn');
+            that.page[set].div.selectAll('.playerBtn.compare').attr('class','playerBtn');
             d3.select(this).attr('class','playerBtn compare');
           }
           if (!clickedBtn && !compareBtn){
