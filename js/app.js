@@ -217,6 +217,9 @@ var mlb = {
           var compareBtn = that.page[set].div.select('.compare')[0][0];
 
           if (clicked=='clicked'){
+            var comparePlayer = that.page[set].div.select('.playerBtn.compare').attr('player');
+            that.page[set].svg.selectAll('g.'+comparePlayer).style('opacity',0.2)
+              .selectAll('path').style('stroke','black');
             that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
             that.changeChart(set);
             that.bindPlayerButtonsMouse(set);
@@ -227,15 +230,21 @@ var mlb = {
             d3.select(this).attr('class','playerBtn');
             that.page[set].svg.select('g.'+guy).style('opacity',0.2)
               .selectAll('path').style('stroke','black');
+            return;
           }
-          if (clickedBtn && !clicked){
+          if (clickedBtn && !compareBtn){
             d3.select(this).attr('class','playerBtn compare');
-            that.page[set].svg.select('g.'+guy).attr('class','player '+guy+' compare').style('opacity',0.55)
+            that.page[set].svg.selectAll('g.'+guy).style('opacity',0.55)
               .selectAll('path').style('stroke','red');
           }
           if (compareBtn){
+            var comparePlayer = that.page[set].div.select('.playerBtn.compare').attr('player');
+            that.page[set].svg.selectAll('g.'+comparePlayer).style('opacity',0.2)
+              .selectAll('path').style('stroke','black');
             that.page[set].div.selectAll('.playerBtn.compare').attr('class','playerBtn');
             d3.select(this).attr('class','playerBtn compare');
+            that.page[set].svg.selectAll('g.'+guy).style('opacity',0.55)
+              .selectAll('path').style('stroke','red');
           }
           if (!clickedBtn && !compareBtn){
             that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
