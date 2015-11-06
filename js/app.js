@@ -216,7 +216,6 @@ var mlb = {
           var clicked = d3.select(this).attr('class').split(" ")[1];
           var clickedBtn = that.page[set].div.select('.clicked')[0][0];
           var compareBtn = that.page[set].div.select('.compare')[0][0];
-
           //this is an ugly function, works in a pinch
           if (clicked=='clicked'){
             if (compareBtn){
@@ -226,6 +225,7 @@ var mlb = {
             }
             that.page[set].compName.text('');
             that.page[set].compName.style('display','none');
+            that.page[set].timeInput[0][0].disabled=false;
             that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
             that.changeChart(set);
             that.bindPlayerButtonsMouse(set);
@@ -233,6 +233,7 @@ var mlb = {
             return;
           }
           if (clicked=='compare'){
+            that.page[set].timeInput[0][0].disabled=false;
             d3.select(this).attr('class','playerBtn');
             that.page[set].svg.select('g.'+guy).style('opacity',0.2)
               .selectAll('path').style('stroke','black');
@@ -247,6 +248,7 @@ var mlb = {
             that.page[set].compName.text(guy.replace("_"," "));
             that.page[set].compName.style('display','block');
             //wonky force layout to career compare
+          that.page[set].timeInput[0][0].disabled=true;
             that.page[set].timeInput[0][1].click();
           }
           if (compareBtn){
@@ -259,9 +261,11 @@ var mlb = {
               .selectAll('path').style('stroke','red');
             that.page[set].compName.text(guy.replace("_"," "));
             //wonky force layout to career compare
+            that.page[set].timeInput[0][0].disabled=true;
             that.page[set].timeInput[0][1].click();
           }
           if (!clickedBtn && !compareBtn){
+            that.page[set].timeInput[0][0].disabled=false;
             that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
             d3.select(this).attr('class','playerBtn clicked');
             that.buttonHover(guy,set);

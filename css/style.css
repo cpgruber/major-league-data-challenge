@@ -127,6 +127,9 @@ input[type="radio"]:checked + label:before{
   z-index:2;
   border-radius:100%;
 }
+input[type="radio"]:disabled + label{
+  text-decoration: line-through;
+}
 select {
   height: 38px;
   padding: 6px 10px;
