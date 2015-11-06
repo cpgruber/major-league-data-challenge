@@ -217,6 +217,7 @@ var mlb = {
           var clickedBtn = that.page[set].div.select('.clicked')[0][0];
           var compareBtn = that.page[set].div.select('.compare')[0][0];
 
+          //this is an ugly function, works in a pinch
           if (clicked=='clicked'){
             if (compareBtn){
               var comparePlayer = that.page[set].div.select('.playerBtn.compare').attr('player');
@@ -245,6 +246,8 @@ var mlb = {
               .selectAll('path').style('stroke','red');
             that.page[set].compName.text(guy.replace("_"," "));
             that.page[set].compName.style('display','block');
+            //wonky force layout to career compare
+            that.page[set].timeInput[0][1].click();
           }
           if (compareBtn){
             var comparePlayer = that.page[set].div.select('.playerBtn.compare').attr('player');
@@ -255,6 +258,8 @@ var mlb = {
             that.page[set].svg.selectAll('g.'+guy).style('opacity',0.55)
               .selectAll('path').style('stroke','red');
             that.page[set].compName.text(guy.replace("_"," "));
+            //wonky force layout to career compare
+            that.page[set].timeInput[0][1].click();
           }
           if (!clickedBtn && !compareBtn){
             that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
