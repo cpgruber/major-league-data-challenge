@@ -39,7 +39,7 @@ var mlb = {
     this.page[set].yAxisLabel = this.page[set].svg.append('text').attr('class','axisTitle')
       .attr('transform','translate('+(20)+','+(this.svgAtt.height/2)+')rotate(-90)');
 
-    this.svgAtt.lineFx = d3.svg.line().interpolate('linear');
+    this.svgAtt.lineFx = d3.svg.line().interpolate('cardinal');
     this.page.xAxis = d3.svg.axis().orient('bottom').tickFormat(d3.format('d'));
     this.page.yAxis = d3.svg.axis().orient('left');
   },
@@ -213,31 +213,49 @@ var mlb = {
         .attr('class','playerBtn').attr('player',guy)
         .on('click',function(){
           var clicked = d3.select(this).attr('class').split(" ")[1];
-          if (clicked){
-            d3.select(this).attr('class','playerBtn');
+          var clickedBtn = that.page[set].div.select('.clicked')[0][0];
+          var compareBtn = that.page[set].div.select('.compare')[0][0];
+
+          if (clicked=='clicked'){
+            that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
             that.changeChart(set);
             that.bindPlayerButtonsMouse(set);
             that.page[set].svg.on('mousemove',null).on('mouseover',null).on('mouseout',null);
             return;
           }
-          that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
-          d3.select(this).attr('class','playerBtn clicked');
-          that.buttonHover(guy,set);
-          that.page[set].div.selectAll('.playerBtn')
-            .on('mouseover',null).on('mousemove',null).on('mouseout',null);
-          that.changeChart(set);
-          that.page[set].svg
-            .on('mouseover',function(){
-              that.toolHov(guy,set);
-            })
-            .on('mousemove',function(){
-              that.toolHov(guy,set);
-            })
-            .on('mouseout',function(){
-              that.toolUnhov(set);
-            })
-        })
-
+          if (clicked=='compare'){
+            d3.select(this).attr('class','playerBtn');
+            that.page[set].svg.select('g.'+guy).style('opacity',0.2)
+              .selectAll('path').style('stroke','black');
+          }
+          if (clickedBtn && !clicked){
+            d3.select(this).attr('class','playerBtn compare');
+            that.page[set].svg.select('g.'+guy).attr(guy+' compare').style('opacity',0.55)
+              .selectAll('path').style('stroke','red');
+          }
+          if (compareBtn){
+            that.page[set].div.selectAll('.compare').attr('class','playerBtn');
+            d3.select(this).attr('class','playerBtn compare');
+          }
+          if (!clickedBtn && !compareBtn){
+            that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
+            d3.select(this).attr('class','playerBtn clicked');
+            that.buttonHover(guy,set);
+            that.page[set].div.selectAll('.playerBtn')
+              .on('mouseover',null).on('mousemove',null).on('mouseout',null);
+            that.changeChart(set);
+            that.page[set].svg
+              .on('mouseover',function(){
+                that.toolHov(guy,set);
+              })
+              .on('mousemove',function(){
+                that.toolHov(guy,set);
+              })
+              .on('mouseout',function(){
+                that.toolUnhov(set);
+              })
+            }
+          });
       btn.append('img').attr("src",'images/'+guy+'.png').attr('alt',guy);
       btn.append('p').text(name);
     })

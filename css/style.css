@@ -40,6 +40,7 @@ h2{
   overflow-y:auto;
 }
 .playerBtn{
+  position:relative;
   display: inline-block;
   width:100%;
   height:100px;
@@ -55,6 +56,14 @@ h2{
   width:100px;
   float:left;
 }
+.playerCompare{
+  position:absolute;
+  width:100%;
+  bottom:0;
+  font-size:14px;
+  text-align: right;
+  display:none;
+}
 .svgContain{
   position:relative;
   float:left;
@@ -63,6 +72,10 @@ h2{
 .clicked{
   background-color:black;
   color:white;
+}
+.compare{
+  background-color:red;
+  color:black;
 }
 select,label{
   display:inline-block;
@@ -93,13 +106,13 @@ select,label{
 input[type="radio"]{
   display:none;
 }
-label{
+.inputContain label{
   position:relative;
   margin-right:10px;
   padding-left:20px;
   cursor: pointer;
 }
-label:after{
+.inputContain label:after{
   content:'';
   display:block;
   position:absolute;
