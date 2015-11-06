@@ -130,6 +130,18 @@ input[type="radio"]:checked + label:before{
 input[type="radio"]:disabled + label{
   text-decoration: line-through;
 }
+input[type="radio"]:disabled + label:before{
+  content:'';
+  display:block;
+  position:absolute;
+  left:2px;
+  top:7px;
+  width:12px;
+  height:12px;
+  background:black;
+  z-index:2;
+  border-radius:100%;
+}
 select {
   height: 38px;
   padding: 6px 10px;
