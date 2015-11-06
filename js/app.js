@@ -21,6 +21,7 @@ var mlb = {
     this.page[set].timeInput = this.page[set].div.selectAll('input.time');
     this.page[set].statsInput = this.page[set].div.selectAll('input.stats');
     this.page[set].displayName = this.page[set].div.select('.dispName');
+    this.page[set].compName = this.page[set].div.select('.compName');
 
     this.page[set].xScale = d3.scale.linear()
       .range([this.svgAtt.margins.left,this.svgAtt.width-this.svgAtt.margins.right]);
@@ -217,9 +218,13 @@ var mlb = {
           var compareBtn = that.page[set].div.select('.compare')[0][0];
 
           if (clicked=='clicked'){
-            var comparePlayer = that.page[set].div.select('.playerBtn.compare').attr('player');
-            that.page[set].svg.selectAll('g.'+comparePlayer).style('opacity',0.2)
-              .selectAll('path').style('stroke','black');
+            if (compareBtn){
+              var comparePlayer = that.page[set].div.select('.playerBtn.compare').attr('player');
+              that.page[set].svg.selectAll('g.'+comparePlayer).style('opacity',0.2)
+                .selectAll('path').style('stroke','black');
+            }
+            that.page[set].compName.text('');
+            that.page[set].compName.style('display','none');
             that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
             that.changeChart(set);
             that.bindPlayerButtonsMouse(set);
@@ -230,12 +235,16 @@ var mlb = {
             d3.select(this).attr('class','playerBtn');
             that.page[set].svg.select('g.'+guy).style('opacity',0.2)
               .selectAll('path').style('stroke','black');
+            that.page[set].compName.text('');
+            that.page[set].compName.style('display','none');
             return;
           }
           if (clickedBtn && !compareBtn){
             d3.select(this).attr('class','playerBtn compare');
             that.page[set].svg.selectAll('g.'+guy).style('opacity',0.55)
               .selectAll('path').style('stroke','red');
+            that.page[set].compName.text(guy.replace("_"," "));
+            that.page[set].compName.style('display','block');
           }
           if (compareBtn){
             var comparePlayer = that.page[set].div.select('.playerBtn.compare').attr('player');
@@ -245,6 +254,7 @@ var mlb = {
             d3.select(this).attr('class','playerBtn compare');
             that.page[set].svg.selectAll('g.'+guy).style('opacity',0.55)
               .selectAll('path').style('stroke','red');
+            that.page[set].compName.text(guy.replace("_"," "));
           }
           if (!clickedBtn && !compareBtn){
             that.page[set].div.selectAll('.playerBtn').attr('class','playerBtn');
