@@ -110,8 +110,15 @@ var mlb = {
     var y = this.getYdomain(set,stats,field);
     var x = this.getXdomain(set,time);
 
-    var yAxis = this.page.yAxis.scale(y).tickFormat(d3.format('s'));
+    var yAxis = this.page.yAxis.scale(y);//.tickFormat(d3.format('s'));
     var xAxis = this.page.xAxis.scale(x);
+
+    var sFields = ['hits','RBI','runs', 'K','ER'];
+    if (sFields.indexOf(field)!== -1){
+      yAxis.tickFormat(d3.format('s'));
+    }else{
+      yAxis.tickFormat(null);
+    }
 
     var lineFx = this.svgAtt.lineFx
       .defined(function(d) {return (d[field]/1 || d[field]==0);})
