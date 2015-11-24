@@ -110,7 +110,7 @@ var mlb = {
     var y = this.getYdomain(set,stats,field);
     var x = this.getXdomain(set,time);
 
-    var yAxis = this.page.yAxis.scale(y);
+    var yAxis = this.page.yAxis.scale(y).tickFormat(d3.format('s'));
     var xAxis = this.page.xAxis.scale(x);
 
     var lineFx = this.svgAtt.lineFx
